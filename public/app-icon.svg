@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="cupGradient" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="oklch(78% .16 85)" />
+      <stop offset="100%" stop-color="oklch(65% .22 45)" />
+    </linearGradient>
+  </defs>
+
+  <rect width="1024" height="1024" fill="oklch(12% .01 280)" />
+
+  <!-- steam -->
+  <path d="M 420 220 C 400 260, 450 280, 430 320 C 412 355, 450 375, 435 410"
+        fill="none" stroke="oklch(78% .16 85)" stroke-width="18" stroke-linecap="round" opacity="0.55" />
+  <path d="M 520 200 C 500 240, 550 260, 530 300 C 512 335, 550 355, 535 390"
+        fill="none" stroke="oklch(78% .16 85)" stroke-width="18" stroke-linecap="round" opacity="0.75" />
+  <path d="M 620 220 C 600 260, 650 280, 630 320 C 612 355, 650 375, 635 410"
+        fill="none" stroke="oklch(78% .16 85)" stroke-width="18" stroke-linecap="round" opacity="0.55" />
+
+  <!-- cup lid -->
+  <rect x="340" y="430" width="344" height="70" rx="30" fill="url(#cupGradient)" />
+
+  <!-- cup body -->
+  <path d="M 362 500 L 662 500 L 620 800 C 616 830 592 852 562 852 L 462 852 C 432 852 408 830 404 800 Z"
+        fill="url(#cupGradient)" />
+
+  <!-- sleeve band -->
+  <rect x="388" y="600" width="248" height="90" rx="14" fill="oklch(12% .01 280)" opacity="0.35" />
+</svg>

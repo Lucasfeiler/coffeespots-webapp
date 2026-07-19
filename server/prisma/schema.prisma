@@ -1,0 +1,74 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           Int        @id @default(autoincrement())
+  email        String     @unique
+  passwordHash String
+  name         String
+  createdAt    DateTime   @default(now())
+  favorites    Favorite[]
+  reviews      Review[]
+}
+
+model Shop {
+  id           Int        @id @default(autoincrement())
+  slug         String     @unique
+  name         String
+  city         String
+  neighborhood String?
+  address      String
+  description  String?
+  tags         Json       @default("[]")
+  hours        Json?
+  website      String?
+  instagram    String?
+  image        String?
+  placeholder  Boolean    @default(false)
+  rating       Float      @default(0)
+  reviewCount  Int        @default(0)
+  createdAt    DateTime   @default(now())
+  favorites    Favorite[]
+  reviews      Review[]
+}
+
+model Favorite {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  shopId    Int
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  shop      Shop     @relation(fields: [shopId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, shopId])
+}
+
+model Review {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  shopId    Int
+  rating    Int
+  text      String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  shop      Shop     @relation(fields: [shopId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, shopId])
+}
+
+model Submission {
+  id           Int      @id @default(autoincrement())
+  name         String
+  city         String
+  neighborhood String?
+  address      String
+  description  String?
+  status       String   @default("pending")
+  createdAt    DateTime @default(now())
+}

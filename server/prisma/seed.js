@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import { shops } from '../../src/data/shops.js';
+import { shops } from './shops-data.js';
 
 const prisma = new PrismaClient();
 

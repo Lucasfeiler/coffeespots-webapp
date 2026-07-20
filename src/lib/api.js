@@ -32,6 +32,7 @@ export const api = {
   register: (email, password, name) => request('/api/auth/register', { method: 'POST', body: { email, password, name } }),
   login: (email, password) => request('/api/auth/login', { method: 'POST', body: { email, password } }),
   me: () => request('/api/auth/me', { auth: true }),
+  updateProfile: (data) => request('/api/auth/me', { method: 'PATCH', auth: true, body: data }),
 
   listShops: (params = {}) => {
     const qs = new URLSearchParams(Object.entries(params).filter(([, v]) => v)).toString();

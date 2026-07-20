@@ -9,6 +9,7 @@ import ShopDetail from './pages/ShopDetail';
 import MapPage from './pages/MapPage';
 import NearMe from './pages/NearMe';
 import Favorites from './pages/Favorites';
+import Profile from './pages/Profile';
 import AddShop from './pages/AddShop';
 import Auth from './pages/Auth';
 import { Privacy, Terms, Impressum } from './pages/StaticPages';
@@ -27,6 +28,7 @@ export default function App() {
                 <Route path="/map" element={<MapPage />} />
                 <Route path="/near-me" element={<NearMe />} />
                 <Route path="/favorites" element={<Favorites />} />
+                <Route path="/profile" element={<Profile />} />
                 <Route path="/add-shop" element={<AddShop />} />
                 <Route path="/auth" element={<Auth />} />
                 <Route path="/privacy" element={<Privacy />} />

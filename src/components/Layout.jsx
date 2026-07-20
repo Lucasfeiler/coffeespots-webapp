@@ -40,12 +40,20 @@ export default function Layout({ children }) {
             ))}
           </nav>
           {user ? (
-            <button
-              onClick={() => { logout(); navigate('/'); }}
-              className="text-sm font-semibold px-4 py-2 rounded-xl border border-[var(--color-border)] hover:bg-[var(--color-card)] transition-colors shrink-0"
-            >
-              Sign out
-            </button>
+            <div className="flex items-center gap-2 shrink-0">
+              <Link
+                to="/profile"
+                className="text-sm font-semibold px-4 py-2 rounded-xl border border-[var(--color-border)] hover:bg-[var(--color-card)] transition-colors"
+              >
+                {user.name}
+              </Link>
+              <button
+                onClick={() => { logout(); navigate('/'); }}
+                className="text-sm font-semibold px-4 py-2 rounded-xl border border-[var(--color-border)] hover:bg-[var(--color-card)] transition-colors"
+              >
+                Sign out
+              </button>
+            </div>
           ) : (
             <Link
               to="/auth"

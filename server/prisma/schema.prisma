@@ -12,6 +12,7 @@ model User {
   email        String     @unique
   passwordHash String
   name         String
+  location     String?
   createdAt    DateTime   @default(now())
   favorites    Favorite[]
   reviews      Review[]
@@ -33,6 +34,8 @@ model Shop {
   placeholder  Boolean    @default(false)
   rating       Float      @default(0)
   reviewCount  Int        @default(0)
+  lat          Float?
+  lng          Float?
   createdAt    DateTime   @default(now())
   favorites    Favorite[]
   reviews      Review[]

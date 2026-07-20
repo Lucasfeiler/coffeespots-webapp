@@ -11,7 +11,7 @@ function issueToken(user) {
 }
 
 function publicUser(user) {
-  return { id: user.id, email: user.email, name: user.name };
+  return { id: user.id, email: user.email, name: user.name, location: user.location };
 }
 
 authRouter.post('/register', async (req, res) => {
@@ -47,5 +47,22 @@ authRouter.post('/login', async (req, res) => {
 authRouter.get('/me', requireAuth, async (req, res) => {
   const user = await prisma.user.findUnique({ where: { id: req.user.sub } });
   if (!user) return res.status(404).json({ error: 'User not found' });
+  res.json({ user: publicUser(user) });
+});
+
+authRouter.patch('/me', requireAuth, async (req, res) => {
+  const { name, location } = req.body;
+  if (name !== undefined && !name.trim()) {
+    return res.status(400).json({ error: 'Name cannot be empty' });
+  }
+
+  const user = await prisma.user.update({
+    where: { id: req.user.sub },
+    data: {
+      ...(name !== undefined ? { name: name.trim() } : {}),
+      ...(location !== undefined ? { location: location.trim() || null } : {}),
+    },
+  });
+
   res.json({ user: publicUser(user) });
 });

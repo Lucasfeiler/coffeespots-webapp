@@ -11,7 +11,7 @@ function issueToken(user) {
 }
 
 function publicUser(user) {
-  return { id: user.id, email: user.email, name: user.name, location: user.location };
+  return { id: user.id, email: user.email, name: user.name, location: user.location, bio: user.bio };
 }
 
 authRouter.post('/register', async (req, res) => {
@@ -51,7 +51,7 @@ authRouter.get('/me', requireAuth, async (req, res) => {
 });
 
 authRouter.patch('/me', requireAuth, async (req, res) => {
-  const { name, location } = req.body;
+  const { name, location, bio } = req.body;
   if (name !== undefined && !name.trim()) {
     return res.status(400).json({ error: 'Name cannot be empty' });
   }
@@ -61,8 +61,29 @@ authRouter.patch('/me', requireAuth, async (req, res) => {
     data: {
       ...(name !== undefined ? { name: name.trim() } : {}),
       ...(location !== undefined ? { location: location.trim() || null } : {}),
+      ...(bio !== undefined ? { bio: bio.trim() || null } : {}),
     },
   });
 
   res.json({ user: publicUser(user) });
+});
+
+authRouter.delete('/me', requireAuth, async (req, res) => {
+  const { password } = req.body;
+  if (!password) return res.status(400).json({ error: 'Password is required to delete your account' });
+
+  const user = await prisma.user.findUnique({ where: { id: req.user.sub } });
+  if (!user || !(await bcrypt.compare(password, user.passwordHash))) {
+    return res.status(401).json({ error: 'Incorrect password' });
+  }
+
+  const reviews = await prisma.review.findMany({ where: { userId: req.user.sub }, select: { shopId: true } });
+  await prisma.user.delete({ where: { id: req.user.sub } });
+
+  for (const shopId of new Set(reviews.map((r) => r.shopId))) {
+    const agg = await prisma.review.aggregate({ where: { shopId }, _avg: { rating: true }, _count: { rating: true } });
+    await prisma.shop.update({ where: { id: shopId }, data: { rating: agg._avg.rating ?? 0, reviewCount: agg._count.rating } });
+  }
+
+  res.status(204).end();
 });

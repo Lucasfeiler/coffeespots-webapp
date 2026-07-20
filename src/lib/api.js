@@ -33,6 +33,7 @@ export const api = {
   login: (email, password) => request('/api/auth/login', { method: 'POST', body: { email, password } }),
   me: () => request('/api/auth/me', { auth: true }),
   updateProfile: (data) => request('/api/auth/me', { method: 'PATCH', auth: true, body: data }),
+  deleteAccount: (password) => request('/api/auth/me', { method: 'DELETE', auth: true, body: { password } }),
 
   listShops: (params = {}) => {
     const qs = new URLSearchParams(Object.entries(params).filter(([, v]) => v)).toString();

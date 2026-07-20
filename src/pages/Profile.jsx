@@ -5,18 +5,25 @@ import { useAuth } from '../context/AuthContext';
 const inputClass = "w-full px-4 py-2.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-card)] text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]";
 
 export default function Profile() {
-  const { user, loading, updateProfile } = useAuth();
+  const { user, loading, updateProfile, deleteAccount } = useAuth();
   const navigate = useNavigate();
   const [name, setName] = useState('');
   const [location, setLocation] = useState('');
+  const [bio, setBio] = useState('');
   const [error, setError] = useState('');
   const [saved, setSaved] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+
+  const [showDeleteForm, setShowDeleteForm] = useState(false);
+  const [deletePassword, setDeletePassword] = useState('');
+  const [deleteError, setDeleteError] = useState('');
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     if (user) {
       setName(user.name ?? '');
       setLocation(user.location ?? '');
+      setBio(user.bio ?? '');
     }
   }, [user]);
 
@@ -32,12 +39,29 @@ export default function Profile() {
     setSaved(false);
     setSubmitting(true);
     try {
-      await updateProfile({ name, location });
+      await updateProfile({ name, location, bio });
       setSaved(true);
     } catch (err) {
       setError(err.message);
     } finally {
       setSubmitting(false);
+    }
+  };
+
+  const handleDelete = async (e) => {
+    e.preventDefault();
+    setDeleteError('');
+    if (!window.confirm('This permanently deletes your account, favorites, and reviews. This cannot be undone. Continue?')) {
+      return;
+    }
+    setDeleting(true);
+    try {
+      await deleteAccount(deletePassword);
+      navigate('/');
+    } catch (err) {
+      setDeleteError(err.message);
+    } finally {
+      setDeleting(false);
     }
   };
 
@@ -62,6 +86,17 @@ export default function Profile() {
           />
         </label>
 
+        <label className="flex flex-col gap-1.5">
+          <span className="text-sm font-medium">Bio</span>
+          <textarea
+            value={bio}
+            onChange={(e) => setBio(e.target.value)}
+            rows={3}
+            className={inputClass}
+            placeholder="Tell other coffee lovers about yourself"
+          />
+        </label>
+
         {error && <p className="text-sm text-red-600">{error}</p>}
         {saved && <p className="text-sm text-[var(--color-accent)]">Saved.</p>}
 
@@ -72,6 +107,51 @@ export default function Profile() {
           {submitting ? 'Saving…' : 'Save changes'}
         </button>
       </form>
+
+      <div className="mt-12 border border-red-900/40 bg-red-950/20 rounded-xl p-5">
+        <p className="text-sm font-semibold text-red-500">Danger zone</p>
+        <p className="text-sm text-[var(--color-muted-fg)] mt-1">
+          Deleting your account permanently removes your profile, favorites, and reviews. This cannot be undone.
+        </p>
+
+        {!showDeleteForm ? (
+          <button
+            onClick={() => setShowDeleteForm(true)}
+            className="mt-4 px-5 py-2.5 rounded-xl bg-red-600 text-white font-semibold text-sm hover:bg-red-700 transition-colors"
+          >
+            Delete account
+          </button>
+        ) : (
+          <form onSubmit={handleDelete} className="mt-4 flex flex-col gap-3">
+            <label className="flex flex-col gap-1.5">
+              <span className="text-sm font-medium">Confirm your password</span>
+              <input
+                required
+                type="password"
+                value={deletePassword}
+                onChange={(e) => setDeletePassword(e.target.value)}
+                className={inputClass}
+              />
+            </label>
+            {deleteError && <p className="text-sm text-red-500">{deleteError}</p>}
+            <div className="flex gap-2">
+              <button
+                disabled={deleting}
+                className="px-5 py-2.5 rounded-xl bg-red-600 text-white font-semibold text-sm hover:bg-red-700 transition-colors disabled:opacity-60"
+              >
+                {deleting ? 'Deleting…' : 'Permanently delete'}
+              </button>
+              <button
+                type="button"
+                onClick={() => { setShowDeleteForm(false); setDeletePassword(''); setDeleteError(''); }}
+                className="px-5 py-2.5 rounded-xl border border-[var(--color-border)] font-semibold text-sm hover:bg-[var(--color-card)] transition-colors"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        )}
+      </div>
     </div>
   );
 }

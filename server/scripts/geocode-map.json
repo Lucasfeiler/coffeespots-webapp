@@ -1,0 +1,722 @@
+{
+  "man-vs-machine-muellerstrasse": {
+    "lat": 48.1309601,
+    "lng": 11.5711858
+  },
+  "lost-weekend": {
+    "lat": 48.1491106,
+    "lng": 11.5796715
+  },
+  "kaffeewerkstatt-amalienstrasse": {
+    "lat": 48.0932347,
+    "lng": 11.4649427
+  },
+  "standl-20": {
+    "lat": 48.1569692,
+    "lng": 11.5746006
+  },
+  "cafe-marais": {
+    "lat": 48.1377532,
+    "lng": 11.5437168
+  },
+  "blackbird-coffee": {
+    "lat": 48.1239109,
+    "lng": 11.5604201
+  },
+  "milch-kekse": {
+    "lat": 48.1310015,
+    "lng": 11.5768741
+  },
+  "cafe-bla": {
+    "lat": 48.1292783,
+    "lng": 11.5863281
+  },
+  "muenchner-kaffeeroesterei": {
+    "lat": 48.1346746,
+    "lng": 11.5762478
+  },
+  "bel-etage": {
+    "lat": 48.1508774,
+    "lng": 11.5742077
+  },
+  "cafe-kosmos": {
+    "lat": 48.1424873,
+    "lng": 11.5600259
+  },
+  "vits-der-kaffee": {
+    "lat": 48.1338436,
+    "lng": 11.5818539
+  },
+  "aroma-kaffeebar": {
+    "lat": 48.130287,
+    "lng": 11.5671578
+  },
+  "mahlefitz": {
+    "lat": 48.1490302,
+    "lng": 11.5491199
+  },
+  "gartensalon": {
+    "lat": 48.151885,
+    "lng": 11.577183
+  },
+  "cafe-frischhut": {
+    "lat": 48.1348995,
+    "lng": 11.5745861
+  },
+  "tushita-teehaus": {
+    "lat": 48.12969469999999,
+    "lng": 11.5731769
+  },
+  "emilo-kaffee": {
+    "lat": 48.1517761,
+    "lng": 11.5804673
+  },
+  "sorry-johnny-kaffeebar": {
+    "lat": 48.1320519,
+    "lng": 11.5975526
+  },
+  "bonanza-coffee-roasters-berlin": {
+    "lat": 52.539975,
+    "lng": 13.4053444
+  },
+  "father-carpenter-berlin": {
+    "lat": 52.5244875,
+    "lng": 13.4065282
+  },
+  "the-barn-mitte-berlin": {
+    "lat": 52.5274383,
+    "lng": 13.39818
+  },
+  "kaffee-9-berlin": {
+    "lat": 52.5019401,
+    "lng": 13.4319783
+  },
+  "green-wall-coffee-berlin": {
+    "lat": 52.5061586,
+    "lng": 13.4954625
+  },
+  "kawa-roastery-berlin": {
+    "lat": 52.5610806,
+    "lng": 13.3729796
+  },
+  "paskal-choux-p-berg-berlin": {
+    "lat": 52.536172,
+    "lng": 13.4182074
+  },
+  "symple-coffee-p-berg-berlin": {
+    "lat": 52.5383554,
+    "lng": 13.419128
+  },
+  "garon-de-caf---specialty-coffee-shop---kaffee-berlin": {
+    "lat": 52.5254884,
+    "lng": 13.3670035
+  },
+  "doppio-coffee-berlin": {
+    "lat": 52.4916278,
+    "lng": 13.4119568
+  },
+  "black-hat-coffee---specialty-espresso-bar-berlin-berlin": {
+    "lat": 52.4902525,
+    "lng": 13.3558502
+  },
+  "ingwer-berlin": {
+    "lat": 52.4931718,
+    "lng": 13.4227233
+  },
+  "caf-lulo---specialty-colombian-coffee-roastery-berlin": {
+    "lat": 52.4643431,
+    "lng": 13.4217929
+  },
+  "blaue-bohne-rsterei-berlin": {
+    "lat": 52.5103154,
+    "lng": 13.4626318
+  },
+  "blaffke-kaffeebar-und-rsterei-berlin": {
+    "lat": 52.5655474,
+    "lng": 13.4076838
+  },
+  "house-of-healing-berlin-caf-berlin": {
+    "lat": 52.5166119,
+    "lng": 13.332051
+  },
+  "distrikt-coffee-berlin": {
+    "lat": 52.531603,
+    "lng": 13.3941146
+  },
+  "kajumi-berlin": {
+    "lat": 52.5441872,
+    "lng": 13.4219242
+  },
+  "five-elephant-kollwitz-berlin": {
+    "lat": 52.5389306,
+    "lng": 13.4212927
+  },
+  "concierge-coffee-berlin": {
+    "lat": 52.5027789,
+    "lng": 13.3661365
+  },
+  "ben-rahim-berlin-berlin": {
+    "lat": 52.5250405,
+    "lng": 13.4018739
+  },
+  "godshot-berlin": {
+    "lat": 52.5330707,
+    "lng": 13.4228907
+  },
+  "coffee-circle-wedding-berlin": {
+    "lat": 52.54385629999999,
+    "lng": 13.3677831
+  },
+  "isla-berlin": {
+    "lat": 52.48033789999999,
+    "lng": 13.4249654
+  },
+  "passenger-oppelnerstr-berlin": {
+    "lat": 52.49992289999999,
+    "lng": 13.4412765
+  },
+  "akkurat-caf-berlin": {
+    "lat": 52.50484969999999,
+    "lng": 13.394206
+  },
+  "she-said-berlin": {
+    "lat": 52.491453,
+    "lng": 13.423326
+  },
+  "garcia-kaffeebar-berlin": {
+    "lat": 52.5277393,
+    "lng": 13.3304137
+  },
+  "kaffeekirsche-berlin": {
+    "lat": 52.50303220000001,
+    "lng": 13.4206823
+  },
+  "goldhahn-und-sampson-charlottenburg-berlin": {
+    "lat": 52.503942,
+    "lng": 13.3077499
+  },
+  "firstcrack-coffee-roasters-cafe-pakolat-berlin-berlin": {
+    "lat": 52.54388179999999,
+    "lng": 13.416278
+  },
+  "warawul-coffee-berlin": {
+    "lat": 52.4753957,
+    "lng": 13.4394746
+  },
+  "five-elephant-kreuzberg-berlin": {
+    "lat": 52.4934326,
+    "lng": 13.438335
+  },
+  "19grams-chaussee-berlin": {
+    "lat": 52.5331018,
+    "lng": 13.3801597
+  },
+  "companion-tea-coffee-berlin": {
+    "lat": 52.4834032,
+    "lng": 13.4412229
+  },
+  "silo-coffee-berlin": {
+    "lat": 52.5100753,
+    "lng": 13.458378
+  },
+  "the-barn-caf-rosenthaler-platz-berlin": {
+    "lat": 52.5300412,
+    "lng": 13.401773
+  },
+  "the-barn-kudamm-berlin": {
+    "lat": 52.503964,
+    "lng": 13.329918
+  },
+  "kolo-coffee-klcf-shop-berlin": {
+    "lat": 52.5352139,
+    "lng": 13.397374
+  },
+  "blumental-berlin": {
+    "lat": 52.50584,
+    "lng": 13.4213038
+  },
+  "balz-und-balz-hamburg": {
+    "lat": 53.57951060000001,
+    "lng": 9.976557
+  },
+  "elbgold-rosterei-hamburg": {
+    "lat": 53.5632199,
+    "lng": 9.967074799999999
+  },
+  "public-coffee-roasters-hamburg": {
+    "lat": 53.5513939,
+    "lng": 9.9825573
+  },
+  "nord-coast-coffee-hamburg": {
+    "lat": 53.5465468,
+    "lng": 9.9880256
+  },
+  "playground-coffee-hamburg": {
+    "lat": 53.5516693,
+    "lng": 9.9653817
+  },
+  "stockholm-espresso-club-hamburg": {
+    "lat": 53.582755,
+    "lng": 10.0119741
+  },
+  "caf-golden-bean-eimsbttel-hamburg": {
+    "lat": 53.577226,
+    "lng": 9.947479
+  },
+  "black-hat-coffee---specialty-espresso-bar-hamburg": {
+    "lat": 53.5730792,
+    "lng": 9.960520299999999
+  },
+  "goldenblack-coffeestore-hamburg": {
+    "lat": 53.5587501,
+    "lng": 9.9753179
+  },
+  "erste-liebe-bar-hamburg": {
+    "lat": 53.5492237,
+    "lng": 9.9848163
+  },
+  "studio-gusto-hamburg": {
+    "lat": 53.579777,
+    "lng": 9.946369299999999
+  },
+  "sueo-espresso-bar-hamburg": {
+    "lat": 53.56235479999999,
+    "lng": 9.9902217
+  },
+  "elbgold-ottensen-hamburg": {
+    "lat": 53.5518884,
+    "lng": 9.9293335
+  },
+  "juicy-project-hamburg": {
+    "lat": 53.55838319999999,
+    "lng": 9.9679557
+  },
+  "thirdroom-hamburg": {
+    "lat": 53.57564379999999,
+    "lng": 9.955214999999999
+  },
+  "codos-altona-hamburg": {
+    "lat": 53.5522286,
+    "lng": 9.9398521
+  },
+  "trader-hamburg": {
+    "lat": 53.56211039999999,
+    "lng": 9.9643955
+  },
+  "elbgold-hamburg": {
+    "lat": 53.5839946,
+    "lng": 9.983905199999999
+  },
+  "1407-breakfast-club---specialty-coffee-matcha-hamburg": {
+    "lat": 53.5751692,
+    "lng": 9.9576162
+  },
+  "drilling-hamburg": {
+    "lat": 53.558321,
+    "lng": 9.9082562
+  },
+  "noor-coffee-hamburg": {
+    "lat": 53.5830895,
+    "lng": 10.014601
+  },
+  "good-one-caf---eimsbttel-hamburg": {
+    "lat": 53.56847,
+    "lng": 9.95514
+  },
+  "marshall-street-coffee-hamburg": {
+    "lat": 53.5486409,
+    "lng": 9.9981479
+  },
+  "bloom-hamburg": {
+    "lat": 53.5651828,
+    "lng": 9.960472099999999
+  },
+  "elbgold-city-hamburg": {
+    "lat": 53.5495889,
+    "lng": 9.9931111
+  },
+  "bean-there-hamburg": {
+    "lat": 53.5846983,
+    "lng": 10.0132079
+  },
+  "blackline-hamburg": {
+    "lat": 53.5532715,
+    "lng": 9.9572429
+  },
+  "belumcoffeebar-hamburg": {
+    "lat": 53.59453999999999,
+    "lng": 9.98448
+  },
+  "lowinskys-ny-coffee-tea-hamburg": {
+    "lat": 53.5834306,
+    "lng": 9.9800226
+  },
+  "salotto-caf-hamburg": {
+    "lat": 53.55637249999999,
+    "lng": 9.9377003
+  },
+  "omen-caf-hamburg": {
+    "lat": 53.55049469999999,
+    "lng": 9.997505499999999
+  },
+  "the-special-connection-hamburg": {
+    "lat": 53.5457774,
+    "lng": 9.9517455
+  },
+  "brhwerk-hamburg": {
+    "lat": 53.5535823,
+    "lng": 9.9988105
+  },
+  "codos-roastery-hamburg": {
+    "lat": 53.55339,
+    "lng": 9.92888
+  },
+  "kropk-hamburg": {
+    "lat": 53.58014559999999,
+    "lng": 9.9683317
+  },
+  "elbgold-rstkaffee-gmbh-hamburg": {
+    "lat": 53.5632199,
+    "lng": 9.967074799999999
+  },
+  "isioka-coffee-hamburg": {
+    "lat": 53.5857723,
+    "lng": 10.008167
+  },
+  "the-basement-coffee-hamburg": {
+    "lat": 53.5568129,
+    "lng": 9.962654299999999
+  },
+  "marie-louise-hamburg": {
+    "lat": 53.554272,
+    "lng": 9.979718
+  },
+  "planten-coffee-hamburg": {
+    "lat": 53.5577688,
+    "lng": 9.990139899999999
+  },
+  "elbgold-winterhude-mhlenkamp-59-hamburg": {
+    "lat": 53.58320759999999,
+    "lng": 10.0097936
+  },
+  "black-delight-kaffeebar-specialty-coffee-rsterei-hamburg-hamburg": {
+    "lat": 53.55515,
+    "lng": 9.92684
+  },
+  "blanco-coffee-hamburg": {
+    "lat": 53.5585161,
+    "lng": 10.0124331
+  },
+  "miini-kafi-zurich": {
+    "lat": 47.3798593,
+    "lng": 8.5271703
+  },
+  "mame-zurich": {
+    "lat": 47.3849639,
+    "lng": 8.5273789
+  },
+  "169-west-zurich": {
+    "lat": 47.3738991,
+    "lng": 8.518075699999999
+  },
+  "slurp-zurich": {
+    "lat": 47.3768166,
+    "lng": 8.520015800000001
+  },
+  "oko-zurich": {
+    "lat": 47.372732,
+    "lng": 8.528229099999999
+  },
+  "coffee-bar-tessinerplatz-zurich": {
+    "lat": 47.3641759,
+    "lng": 8.5321327
+  },
+  "milchbar-zurich": {
+    "lat": 47.3690383,
+    "lng": 8.540161699999999
+  },
+  "nude-zurich": {
+    "lat": 47.388692,
+    "lng": 8.5301993
+  },
+  "commercial---the-project-zurich": {
+    "lat": 47.3773193,
+    "lng": 8.521980899999999
+  },
+  "mir-brauer-zurich": {
+    "lat": 47.3785969,
+    "lng": 8.525734000000002
+  },
+  "bean-bank-coffee-co-zurich": {
+    "lat": 47.37790039999999,
+    "lng": 8.533030199999999
+  },
+  "ctrl-cafe-bar-zurich": {
+    "lat": 47.3695533,
+    "lng": 8.5573839
+  },
+  "vicafe-rsterei-kaffeebar-zurich": {
+    "lat": 47.3881531,
+    "lng": 8.5016196
+  },
+  "helvti-kafi---rent-a-barista-zurich": {
+    "lat": 47.3735203,
+    "lng": 8.5315268
+  },
+  "cafe-am-platz-zrich-zurich": {
+    "lat": 47.3911828,
+    "lng": 8.538487
+  },
+  "tuttee-fruttee-coffee-zurich": {
+    "lat": 47.3726576,
+    "lng": 8.526293899999999
+  },
+  "another-cafe-concept-store-zurich": {
+    "lat": 47.37972629999999,
+    "lng": 8.5240285
+  },
+  "lamassu-specialty-coffee-zurich": {
+    "lat": 47.3788743,
+    "lng": 8.5438862
+  },
+  "le-petit-marais-zurich": {
+    "lat": 47.3895431,
+    "lng": 8.494686999999999
+  },
+  "bros-beans-beats-zurich": {
+    "lat": 47.37279969999999,
+    "lng": 8.5252647
+  },
+  "grande-caf-bar-zurich": {
+    "lat": 47.3754553,
+    "lng": 8.5435945
+  },
+  "lalere-caf-bar-zurich": {
+    "lat": 47.3693573,
+    "lng": 8.5205532
+  },
+  "hype-specialty-coffee-good-vibes-zurich": {
+    "lat": 47.3804113,
+    "lng": 8.5479395
+  },
+  "bar-butter-zurich": {
+    "lat": 47.37894840000001,
+    "lng": 8.5278405
+  },
+  "coffee-addict-zurich": {
+    "lat": 47.374435,
+    "lng": 8.529358799999999
+  },
+  "ombak-coffee-zurich": {
+    "lat": 47.3766044,
+    "lng": 8.524930399999999
+  },
+  "auer-co-zurich": {
+    "lat": 47.384833,
+    "lng": 8.533674999999999
+  },
+  "collective-bakery-zurich": {
+    "lat": 47.3923168,
+    "lng": 8.5109541
+  },
+  "kafischnaps-zurich": {
+    "lat": 47.3911722,
+    "lng": 8.535997199999999
+  },
+  "frau-gerolds-garten-zurich": {
+    "lat": 47.38555119999999,
+    "lng": 8.5192937
+  },
+  "boreal-bahnhofstrasse-zurich": {
+    "lat": 47.3720272,
+    "lng": 8.5348881
+  },
+  "vicafe-bellevue-zurich": {
+    "lat": 47.36680579999999,
+    "lng": 8.546159099999999
+  },
+  "don-joaco-coffeefarm-coffeebike-coffeeshop-coffee-roasters-vienna": {
+    "lat": 48.1871491,
+    "lng": 16.3529198
+  },
+  "salzi-vienna": {
+    "lat": 48.2154675,
+    "lng": 16.3769435
+  },
+  "sssmund-kaffee-shop-vienna": {
+    "lat": 48.2059647,
+    "lng": 16.3722901
+  },
+  "the-good-coffee-society-vienna": {
+    "lat": 48.1961349,
+    "lng": 16.3422226
+  },
+  "vogel-kaffee-vienna": {
+    "lat": 48.2252576,
+    "lng": 16.3931658
+  },
+  "goldener-papagei-vienna": {
+    "lat": 48.2136456,
+    "lng": 16.3819785
+  },
+  "caf-de-fleur-vienna": {
+    "lat": 48.1967966,
+    "lng": 16.337663
+  },
+  "coffee-club-1130-vienna": {
+    "lat": 48.1874468,
+    "lng": 16.2843311
+  },
+  "kleines-wiener-caf-toluka-specialty-coffee-roasters-vienna": {
+    "lat": 48.2130857,
+    "lng": 16.3496295
+  },
+  "caf-exchange-vienna": {
+    "lat": 48.21001510000001,
+    "lng": 16.3807289
+  },
+  "wildkaffee-wien-vienna": {
+    "lat": 48.191854,
+    "lng": 16.3575101
+  },
+  "gota-coffee-experts-vienna": {
+    "lat": 48.1914215,
+    "lng": 16.3269093
+  },
+  "hafi-books-coffee-vienna": {
+    "lat": 48.1963235,
+    "lng": 16.3582632
+  },
+  "kafana-coffee-roastery-vienna": {
+    "lat": 48.2195219,
+    "lng": 16.3880816
+  },
+  "brass-monkey-vienna": {
+    "lat": 48.19489530000001,
+    "lng": 16.3508287
+  },
+  "balthasar-kaffee-bar-wien": {
+    "lat": 48.214837,
+    "lng": 16.385304
+  },
+  "jonas-reindl-coffee-wien": {
+    "lat": 48.2149013,
+    "lng": 16.3618455
+  },
+  "ototo-store-specialty-coffee-vienna": {
+    "lat": 48.2017563,
+    "lng": 16.345195
+  },
+  "atelier-7-the-caf-vienna": {
+    "lat": 48.2073615,
+    "lng": 16.3771747
+  },
+  "kafftscherl---specialty-coffee-vienna": {
+    "lat": 48.2021598,
+    "lng": 16.3528396
+  },
+  "kaffeefabrik-vienna": {
+    "lat": 48.1958817,
+    "lng": 16.3684099
+  },
+  "kaffemik-vienna": {
+    "lat": 48.1991539,
+    "lng": 16.3509685
+  },
+  "loka-yoga-cafe-vienna": {
+    "lat": 48.1885483,
+    "lng": 16.3539383
+  },
+  "small-batch-vienna": {
+    "lat": 48.21783869999999,
+    "lng": 16.3795041
+  },
+  "beandependent-vienna": {
+    "lat": 48.2236244,
+    "lng": 16.3848605
+  },
+  "poc-cafe-vienna": {
+    "lat": 48.21458089999999,
+    "lng": 16.3529368
+  },
+  "suessi-vienna": {
+    "lat": 48.1979258,
+    "lng": 16.3658533
+  },
+  "coffeepirates-vienna": {
+    "lat": 48.2173845,
+    "lng": 16.3511695
+  },
+  "fenster-cafe-vienna": {
+    "lat": 48.2109524,
+    "lng": 16.3770858
+  },
+  "the-pelican-coffee-company-vienna": {
+    "lat": 48.215686,
+    "lng": 16.348182
+  },
+  "baristas-united-coffee-shop-vienna": {
+    "lat": 48.2034567,
+    "lng": 16.3891504
+  },
+  "josua-coffee-vienna": {
+    "lat": 48.1945232,
+    "lng": 16.3506147
+  },
+  "coffeewerk-specialty-coffee-vienna": {
+    "lat": 48.1941437,
+    "lng": 16.3356363
+  },
+  "alt-wien-kaffee-vienna": {
+    "lat": 48.19814,
+    "lng": 16.36402
+  },
+  "cottage-roasters-1010-vienna": {
+    "lat": 48.210643,
+    "lng": 16.3768924
+  },
+  "koun-coffee-vienna": {
+    "lat": 48.1940699,
+    "lng": 16.3674852
+  },
+  "kaffeemodul-vienna": {
+    "lat": 48.20960669999999,
+    "lng": 16.3484824
+  },
+  "oak-brew-coffee-vienna": {
+    "lat": 48.20431079999999,
+    "lng": 16.3748505
+  },
+  "no-panic-coffee-vienna": {
+    "lat": 48.19815999999999,
+    "lng": 16.368518
+  },
+  "the-truth-wollzeile-vienna": {
+    "lat": 48.2093966,
+    "lng": 16.3747986
+  },
+  "nd-coffeeart-vienna": {
+    "lat": 48.20353009999999,
+    "lng": 16.372164
+  },
+  "rekompany-vienna": {
+    "lat": 48.1870039,
+    "lng": 16.3695178
+  },
+  "ihana-vienna": {
+    "lat": 48.2199818,
+    "lng": 16.3769427
+  },
+  "the-miners-coffee-naschmarkt-vienna": {
+    "lat": 48.2001607,
+    "lng": 16.3652155
+  },
+  "caf-fokus-vienna": {
+    "lat": 48.2191686,
+    "lng": 16.3799647
+  },
+  "manana-caf-vienna": {
+    "lat": 48.2249794,
+    "lng": 16.3430902
+  }
+}

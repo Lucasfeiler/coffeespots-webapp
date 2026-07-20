@@ -19,6 +19,7 @@ model User {
   favorites    Favorite[]
   reviews      Review[]
   visits       Visit[]
+  deviceTokens DeviceToken[]
 }
 
 model Shop {
@@ -78,6 +79,14 @@ model Visit {
   shop      Shop     @relation(fields: [shopId], references: [id], onDelete: Cascade)
 
   @@unique([userId, shopId])
+}
+
+model DeviceToken {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  token     String   @unique
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Submission {

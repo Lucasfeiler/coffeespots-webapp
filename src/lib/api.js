@@ -67,4 +67,7 @@ export const api = {
 
   nearbyShops: (lat, lon, radius) =>
     request(`/api/nearby?lat=${lat}&lon=${lon}${radius ? `&radius=${radius}` : ''}`),
+
+  registerDeviceToken: (token) => request('/api/notifications/register', { method: 'POST', auth: true, body: { token } }),
+  sendTestNotification: () => request('/api/notifications/test', { method: 'POST', auth: true }),
 };

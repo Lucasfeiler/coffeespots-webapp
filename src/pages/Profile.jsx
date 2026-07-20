@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { api } from '../lib/api';
+import { requestNotificationToken } from '../lib/firebase';
 
 const inputClass = "w-full px-4 py-2.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-card)] text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]";
 
@@ -37,6 +39,9 @@ export default function Profile() {
 
   const [uploading, setUploading] = useState(false);
   const [photoError, setPhotoError] = useState('');
+
+  const [notifStatus, setNotifStatus] = useState('idle'); // idle | enabling | enabled | error | sending | sent
+  const [notifError, setNotifError] = useState('');
 
   useEffect(() => {
     if (user) {
@@ -103,6 +108,32 @@ export default function Profile() {
     }
   };
 
+  const handleEnableNotifications = async () => {
+    setNotifError('');
+    setNotifStatus('enabling');
+    try {
+      const token = await requestNotificationToken();
+      await api.registerDeviceToken(token);
+      setNotifStatus('enabled');
+    } catch (err) {
+      setNotifError(err.message);
+      setNotifStatus('error');
+    }
+  };
+
+  const handleSendTest = async () => {
+    setNotifError('');
+    setNotifStatus('sending');
+    try {
+      const { sent } = await api.sendTestNotification();
+      setNotifStatus(sent > 0 ? 'sent' : 'error');
+      if (sent === 0) setNotifError('No notification was delivered — try enabling again.');
+    } catch (err) {
+      setNotifError(err.message);
+      setNotifStatus('error');
+    }
+  };
+
   return (
     <div className="max-w-sm mx-auto px-5 sm:px-8 py-16">
       <h1 className="font-display text-3xl font-semibold mb-6">Your profile</h1>
@@ -138,6 +169,33 @@ export default function Profile() {
               ? `${upcoming.count - user.visitCount} more for ${upcoming.name}.`
               : `You've earned every badge!`}
         </p>
+      </div>
+
+      <div className="mt-4 bg-[var(--color-card)] border border-[var(--color-border)] rounded-xl p-4">
+        <p className="text-sm font-semibold">Notifications</p>
+        <p className="text-xs text-[var(--color-muted-fg)] mt-1">
+          Get notified about new specialty shops and updates. You can turn this off anytime in your browser settings.
+        </p>
+        {notifError && <p className="text-sm text-red-500 mt-2">{notifError}</p>}
+        <div className="mt-3 flex gap-2">
+          {notifStatus !== 'enabled' && notifStatus !== 'sent' ? (
+            <button
+              onClick={handleEnableNotifications}
+              disabled={notifStatus === 'enabling'}
+              className="px-4 py-2 rounded-xl bg-[var(--color-primary)] text-[var(--color-primary-fg)] font-semibold text-sm disabled:opacity-60"
+            >
+              {notifStatus === 'enabling' ? 'Enabling…' : 'Enable notifications'}
+            </button>
+          ) : (
+            <button
+              onClick={handleSendTest}
+              disabled={notifStatus === 'sending'}
+              className="px-4 py-2 rounded-xl border border-[var(--color-border)] font-semibold text-sm hover:bg-[var(--color-bg)] disabled:opacity-60"
+            >
+              {notifStatus === 'sending' ? 'Sending…' : notifStatus === 'sent' ? 'Sent — send another test' : 'Send test notification'}
+            </button>
+          )}
+        </div>
       </div>
 
       <form onSubmit={handleSubmit} className="mt-8 flex flex-col gap-4">

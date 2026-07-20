@@ -17,6 +17,14 @@ export function getStorageBucket() {
 
   const bucketName = process.env.FIREBASE_STORAGE_BUCKET || `${serviceAccount.project_id}.firebasestorage.app`;
 
+  const fieldTypes = Object.fromEntries(
+    ['type', 'project_id', 'private_key_id', 'private_key', 'client_email', 'client_id']
+      .map((k) => [k, typeof serviceAccount[k]])
+  );
+  const privateKeyPreview = typeof serviceAccount.private_key === 'string'
+    ? `len=${serviceAccount.private_key.length} starts="${serviceAccount.private_key.slice(0, 15)}" hasLiteralBackslashN=${serviceAccount.private_key.includes('\\n')} hasRealNewline=${serviceAccount.private_key.includes('\n')}`
+    : 'not a string';
+
   try {
     if (!admin.apps.length) {
       admin.initializeApp({
@@ -26,7 +34,9 @@ export function getStorageBucket() {
     }
     bucket = admin.storage().bucket();
   } catch (e) {
-    throw new Error(`Firebase Storage init failed (bucketName="${bucketName}"): ${e.message}`);
+    throw new Error(
+      `Firebase Storage init failed (bucketName="${bucketName}"): ${e.message} | fieldTypes=${JSON.stringify(fieldTypes)} | privateKey: ${privateKeyPreview}`
+    );
   }
 
   return bucket;

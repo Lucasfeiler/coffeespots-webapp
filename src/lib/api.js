@@ -45,6 +45,9 @@ export const api = {
   listFavorites: () => request('/api/favorites', { auth: true }),
   toggleFavorite: (shopId) => request(`/api/favorites/${shopId}`, { method: 'POST', auth: true }),
 
+  listVisits: () => request('/api/visits', { auth: true }),
+  toggleVisit: (shopId) => request(`/api/visits/${shopId}`, { method: 'POST', auth: true }),
+
   listReviews: (slug) => request(`/api/shops/${slug}/reviews`),
   addReview: (slug, rating, text) => request(`/api/shops/${slug}/reviews`, { method: 'POST', auth: true, body: { rating, text } }),
 

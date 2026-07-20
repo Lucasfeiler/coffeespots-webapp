@@ -17,6 +17,7 @@ model User {
   createdAt    DateTime   @default(now())
   favorites    Favorite[]
   reviews      Review[]
+  visits       Visit[]
 }
 
 model Shop {
@@ -40,6 +41,7 @@ model Shop {
   createdAt    DateTime   @default(now())
   favorites    Favorite[]
   reviews      Review[]
+  visits       Visit[]
 }
 
 model Favorite {
@@ -59,6 +61,17 @@ model Review {
   shopId    Int
   rating    Int
   text      String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  shop      Shop     @relation(fields: [shopId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, shopId])
+}
+
+model Visit {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  shopId    Int
   createdAt DateTime @default(now())
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   shop      Shop     @relation(fields: [shopId], references: [id], onDelete: Cascade)

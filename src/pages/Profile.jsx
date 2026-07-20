@@ -4,6 +4,22 @@ import { useAuth } from '../context/AuthContext';
 
 const inputClass = "w-full px-4 py-2.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-card)] text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]";
 
+const badges = [
+  { count: 5, name: 'Explorer' },
+  { count: 10, name: 'Regular' },
+  { count: 25, name: 'Connoisseur' },
+  { count: 50, name: 'Legend' },
+];
+
+function nextBadge(visitCount) {
+  return badges.find((b) => visitCount < b.count) ?? null;
+}
+
+function formatJoinDate(dateString) {
+  if (!dateString) return null;
+  return new Date(dateString).toLocaleDateString(undefined, { day: 'numeric', month: 'long', year: 'numeric' });
+}
+
 export default function Profile() {
   const { user, loading, updateProfile, deleteAccount } = useAuth();
   const navigate = useNavigate();
@@ -65,12 +81,30 @@ export default function Profile() {
     }
   };
 
+  const joinDate = formatJoinDate(user.createdAt);
+  const upcoming = nextBadge(user.visitCount ?? 0);
+
   return (
     <div className="max-w-sm mx-auto px-5 sm:px-8 py-16">
       <h1 className="font-display text-3xl font-semibold mb-2">Your profile</h1>
-      <p className="text-sm text-[var(--color-muted-fg)] mb-8">{user.email}</p>
+      <p className="text-sm text-[var(--color-muted-fg)]">{user.email}</p>
+      {joinDate && <p className="text-xs text-[var(--color-muted-fg)] mt-1">Joined {joinDate}</p>}
 
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+      <div className="mt-6 bg-[var(--color-card)] border border-[var(--color-border)] rounded-xl p-4">
+        <div className="flex items-center justify-between">
+          <p className="text-sm font-semibold">Visited shops</p>
+          <p className="font-display text-2xl font-semibold text-[var(--color-accent)]">{user.visitCount ?? 0}</p>
+        </div>
+        <p className="text-xs text-[var(--color-muted-fg)] mt-1">
+          {(user.visitCount ?? 0) === 0
+            ? `Tap "I've been here" on a shop to start collecting badges.`
+            : upcoming
+              ? `${upcoming.count - user.visitCount} more for ${upcoming.name}.`
+              : `You've earned every badge!`}
+        </p>
+      </div>
+
+      <form onSubmit={handleSubmit} className="mt-8 flex flex-col gap-4">
         <label className="flex flex-col gap-1.5">
           <span className="text-sm font-medium">Name</span>
           <input required value={name} onChange={(e) => setName(e.target.value)} className={inputClass} />

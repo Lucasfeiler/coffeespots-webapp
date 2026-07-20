@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { api } from '../lib/api';
 import { ShopThumb } from '../components/ShopCard';
 import { useFavorites } from '../context/FavoritesContext';
+import { useVisits } from '../context/VisitsContext';
 import { useAuth } from '../context/AuthContext';
 
 const dayLabels = { mon: 'Mon', tue: 'Tue', wed: 'Wed', thu: 'Thu', fri: 'Fri', sat: 'Sat', sun: 'Sun' };
@@ -12,6 +13,7 @@ export default function ShopDetail() {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { isFavorite, toggleFavorite } = useFavorites();
+  const { isVisited, toggleVisit } = useVisits();
 
   const [shop, setShop] = useState(null);
   const [notFound, setNotFound] = useState(false);
@@ -53,10 +55,16 @@ export default function ShopDetail() {
   }
 
   const fav = isFavorite(shop.id);
+  const visited = isVisited(shop.id);
 
   const handleFavoriteClick = () => {
     if (!user) return navigate('/auth');
     toggleFavorite(shop.id);
+  };
+
+  const handleVisitClick = () => {
+    if (!user) return navigate('/auth');
+    toggleVisit(shop.id);
   };
 
   const handleReviewSubmit = async (e) => {
@@ -85,16 +93,28 @@ export default function ShopDetail() {
 
       <div className="flex items-start justify-between gap-4 mt-6">
         <h1 className="font-display text-3xl sm:text-4xl font-semibold">{shop.name}</h1>
-        <button
-          onClick={handleFavoriteClick}
-          className={`shrink-0 px-4 py-2 rounded-xl text-sm font-semibold border transition-colors ${
-            fav
-              ? 'bg-[var(--color-primary)] text-[var(--color-primary-fg)] border-[var(--color-primary)]'
-              : 'border-[var(--color-border)] hover:bg-[var(--color-card)]'
-          }`}
-        >
-          {fav ? '♥ Saved' : '♡ Save'}
-        </button>
+        <div className="flex flex-col gap-2 shrink-0">
+          <button
+            onClick={handleFavoriteClick}
+            className={`px-4 py-2 rounded-xl text-sm font-semibold border transition-colors ${
+              fav
+                ? 'bg-[var(--color-primary)] text-[var(--color-primary-fg)] border-[var(--color-primary)]'
+                : 'border-[var(--color-border)] hover:bg-[var(--color-card)]'
+            }`}
+          >
+            {fav ? '♥ Saved' : '♡ Save'}
+          </button>
+          <button
+            onClick={handleVisitClick}
+            className={`px-4 py-2 rounded-xl text-sm font-semibold border transition-colors ${
+              visited
+                ? 'bg-[var(--color-accent)] text-[var(--color-accent-fg)] border-[var(--color-accent)]'
+                : 'border-[var(--color-border)] hover:bg-[var(--color-card)]'
+            }`}
+          >
+            {visited ? '✓ Visited' : "I've been here"}
+          </button>
+        </div>
       </div>
       <p className="text-[var(--color-muted-fg)] mt-1">{shop.address}</p>
       <p className="text-sm text-[var(--color-muted-fg)] mt-1">

@@ -7,6 +7,7 @@ import { favoritesRouter } from './routes/favorites.js';
 import { reviewsRouter } from './routes/reviews.js';
 import { submissionsRouter } from './routes/submissions.js';
 import { nearbyRouter } from './routes/nearby.js';
+import { visitsRouter } from './routes/visits.js';
 
 const app = express();
 
@@ -21,6 +22,7 @@ app.use('/api/shops/:slug/reviews', reviewsRouter);
 app.use('/api/favorites', favoritesRouter);
 app.use('/api/submissions', submissionsRouter);
 app.use('/api/nearby', nearbyRouter);
+app.use('/api/visits', visitsRouter);
 
 app.use((err, _req, res, _next) => {
   console.error(err);

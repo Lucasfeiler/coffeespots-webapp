@@ -10,8 +10,16 @@ function issueToken(user) {
   return jwt.sign({ sub: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '30d' });
 }
 
-function publicUser(user) {
-  return { id: user.id, email: user.email, name: user.name, location: user.location, bio: user.bio };
+function publicUser(user, visitCount = 0) {
+  return {
+    id: user.id,
+    email: user.email,
+    name: user.name,
+    location: user.location,
+    bio: user.bio,
+    createdAt: user.createdAt,
+    visitCount,
+  };
 }
 
 authRouter.post('/register', async (req, res) => {
@@ -41,13 +49,15 @@ authRouter.post('/login', async (req, res) => {
     return res.status(401).json({ error: 'Invalid email or password' });
   }
 
-  res.json({ token: issueToken(user), user: publicUser(user) });
+  const visitCount = await prisma.visit.count({ where: { userId: user.id } });
+  res.json({ token: issueToken(user), user: publicUser(user, visitCount) });
 });
 
 authRouter.get('/me', requireAuth, async (req, res) => {
   const user = await prisma.user.findUnique({ where: { id: req.user.sub } });
   if (!user) return res.status(404).json({ error: 'User not found' });
-  res.json({ user: publicUser(user) });
+  const visitCount = await prisma.visit.count({ where: { userId: user.id } });
+  res.json({ user: publicUser(user, visitCount) });
 });
 
 authRouter.patch('/me', requireAuth, async (req, res) => {
@@ -65,7 +75,8 @@ authRouter.patch('/me', requireAuth, async (req, res) => {
     },
   });
 
-  res.json({ user: publicUser(user) });
+  const visitCount = await prisma.visit.count({ where: { userId: user.id } });
+  res.json({ user: publicUser(user, visitCount) });
 });
 
 authRouter.delete('/me', requireAuth, async (req, res) => {

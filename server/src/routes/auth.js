@@ -99,22 +99,29 @@ authRouter.post('/me/photo', requireAuth, (req, res) => {
     if (err) return res.status(400).json({ error: err.message });
     if (!req.file) return res.status(400).json({ error: 'No photo uploaded' });
 
+    let step = 'start';
     try {
       const ext = req.file.mimetype.split('/')[1];
       const filename = `avatars/${req.user.sub}-${randomUUID()}.${ext}`;
+      step = 'getStorageBucket';
       const bucket = getStorageBucket();
+      step = 'bucket.file';
       const blob = bucket.file(filename);
 
+      step = 'blob.save';
       await blob.save(req.file.buffer, { contentType: req.file.mimetype });
+      step = 'blob.makePublic';
       await blob.makePublic();
       const avatarUrl = `https://storage.googleapis.com/${bucket.name}/${filename}`;
 
+      step = 'prisma.user.update';
       const user = await prisma.user.update({ where: { id: req.user.sub }, data: { avatarUrl } });
+      step = 'prisma.visit.count';
       const visitCount = await prisma.visit.count({ where: { userId: user.id } });
       res.json({ user: publicUser(user, visitCount) });
     } catch (e) {
-      console.error(e);
-      res.status(500).json({ error: 'Failed to upload photo', debugMessage: e.message, debugCode: e.code });
+      console.error(step, e);
+      res.status(500).json({ error: 'Failed to upload photo', debugStep: step, debugMessage: e.message, debugCode: e.code });
     }
   });
 });

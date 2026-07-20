@@ -1,22 +1,30 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 const inputClass = "w-full px-4 py-2.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-card)] text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]";
 
 export default function Profile() {
-  const { user, updateProfile } = useAuth();
+  const { user, loading, updateProfile } = useAuth();
   const navigate = useNavigate();
-  const [name, setName] = useState(user?.name ?? '');
-  const [location, setLocation] = useState(user?.location ?? '');
+  const [name, setName] = useState('');
+  const [location, setLocation] = useState('');
   const [error, setError] = useState('');
   const [saved, setSaved] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
-  if (!user) {
-    navigate('/auth');
-    return null;
-  }
+  useEffect(() => {
+    if (user) {
+      setName(user.name ?? '');
+      setLocation(user.location ?? '');
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if (!loading && !user) navigate('/auth');
+  }, [loading, user, navigate]);
+
+  if (!user) return null;
 
   const handleSubmit = async (e) => {
     e.preventDefault();

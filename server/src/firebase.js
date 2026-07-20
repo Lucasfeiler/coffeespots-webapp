@@ -8,35 +8,35 @@ export function getStorageBucket() {
   const raw = process.env.FIREBASE_SERVICE_ACCOUNT_KEY;
   if (!raw) throw new Error('FIREBASE_SERVICE_ACCOUNT_KEY is not set');
 
-  let serviceAccount;
-  try {
-    serviceAccount = JSON.parse(raw);
-  } catch (e) {
-    throw new Error(`FIREBASE_SERVICE_ACCOUNT_KEY is not valid JSON: ${e.message}`);
-  }
-
+  const serviceAccount = JSON.parse(raw);
   const bucketName = process.env.FIREBASE_STORAGE_BUCKET || `${serviceAccount.project_id}.firebasestorage.app`;
 
-  const fieldTypes = Object.fromEntries(
-    ['type', 'project_id', 'private_key_id', 'private_key', 'client_email', 'client_id']
-      .map((k) => [k, typeof serviceAccount[k]])
-  );
-  const privateKeyPreview = typeof serviceAccount.private_key === 'string'
-    ? `len=${serviceAccount.private_key.length} starts="${serviceAccount.private_key.slice(0, 15)}" hasLiteralBackslashN=${serviceAccount.private_key.includes('\\n')} hasRealNewline=${serviceAccount.private_key.includes('\n')}`
-    : 'not a string';
+  let cred;
+  try {
+    cred = admin.credential.cert(serviceAccount);
+  } catch (e) {
+    throw new Error(`substep=admin.credential.cert | ${e.message}`);
+  }
+
+  if (!admin.apps.length) {
+    try {
+      admin.initializeApp({ credential: cred, storageBucket: bucketName });
+    } catch (e) {
+      throw new Error(`substep=admin.initializeApp | ${e.message}`);
+    }
+  }
+
+  let storageInstance;
+  try {
+    storageInstance = admin.storage();
+  } catch (e) {
+    throw new Error(`substep=admin.storage() | ${e.message}`);
+  }
 
   try {
-    if (!admin.apps.length) {
-      admin.initializeApp({
-        credential: admin.credential.cert(serviceAccount),
-        storageBucket: bucketName,
-      });
-    }
-    bucket = admin.storage().bucket();
+    bucket = storageInstance.bucket();
   } catch (e) {
-    throw new Error(
-      `Firebase Storage init failed (bucketName="${bucketName}"): ${e.message} | fieldTypes=${JSON.stringify(fieldTypes)} | privateKey: ${privateKeyPreview}`
-    );
+    throw new Error(`substep=storageInstance.bucket() bucketName="${bucketName}" | ${e.message}`);
   }
 
   return bucket;

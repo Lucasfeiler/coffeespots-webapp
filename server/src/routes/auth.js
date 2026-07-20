@@ -114,7 +114,7 @@ authRouter.post('/me/photo', requireAuth, (req, res) => {
       res.json({ user: publicUser(user, visitCount) });
     } catch (e) {
       console.error(e);
-      res.status(500).json({ error: 'Failed to upload photo' });
+      res.status(500).json({ error: 'Failed to upload photo', debugMessage: e.message, debugCode: e.code });
     }
   });
 });

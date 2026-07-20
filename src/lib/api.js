@@ -34,6 +34,18 @@ export const api = {
   me: () => request('/api/auth/me', { auth: true }),
   updateProfile: (data) => request('/api/auth/me', { method: 'PATCH', auth: true, body: data }),
   deleteAccount: (password) => request('/api/auth/me', { method: 'DELETE', auth: true, body: { password } }),
+  uploadPhoto: async (file) => {
+    const formData = new FormData();
+    formData.append('photo', file);
+    const res = await fetch(`${BASE_URL}/api/auth/me/photo`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${getToken()}` },
+      body: formData,
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(data.error || `Request failed (${res.status})`);
+    return data;
+  },
 
   listShops: (params = {}) => {
     const qs = new URLSearchParams(Object.entries(params).filter(([, v]) => v)).toString();

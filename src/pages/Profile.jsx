@@ -21,7 +21,7 @@ function formatJoinDate(dateString) {
 }
 
 export default function Profile() {
-  const { user, loading, updateProfile, deleteAccount } = useAuth();
+  const { user, loading, updateProfile, deleteAccount, uploadPhoto } = useAuth();
   const navigate = useNavigate();
   const [name, setName] = useState('');
   const [location, setLocation] = useState('');
@@ -34,6 +34,9 @@ export default function Profile() {
   const [deletePassword, setDeletePassword] = useState('');
   const [deleteError, setDeleteError] = useState('');
   const [deleting, setDeleting] = useState(false);
+
+  const [uploading, setUploading] = useState(false);
+  const [photoError, setPhotoError] = useState('');
 
   useEffect(() => {
     if (user) {
@@ -83,12 +86,45 @@ export default function Profile() {
 
   const joinDate = formatJoinDate(user.createdAt);
   const upcoming = nextBadge(user.visitCount ?? 0);
+  const initials = user.name?.trim().slice(0, 2).toUpperCase() || '?';
+
+  const handlePhotoChange = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setPhotoError('');
+    setUploading(true);
+    try {
+      await uploadPhoto(file);
+    } catch (err) {
+      setPhotoError(err.message);
+    } finally {
+      setUploading(false);
+      e.target.value = '';
+    }
+  };
 
   return (
     <div className="max-w-sm mx-auto px-5 sm:px-8 py-16">
-      <h1 className="font-display text-3xl font-semibold mb-2">Your profile</h1>
-      <p className="text-sm text-[var(--color-muted-fg)]">{user.email}</p>
-      {joinDate && <p className="text-xs text-[var(--color-muted-fg)] mt-1">Joined {joinDate}</p>}
+      <h1 className="font-display text-3xl font-semibold mb-6">Your profile</h1>
+
+      <div className="flex items-center gap-4">
+        {user.avatarUrl ? (
+          <img src={user.avatarUrl} alt={user.name} className="w-16 h-16 rounded-full object-cover shrink-0" />
+        ) : (
+          <div className="w-16 h-16 rounded-full bg-[var(--color-primary)]/20 text-[var(--color-primary)] flex items-center justify-center font-display font-semibold text-lg shrink-0">
+            {initials}
+          </div>
+        )}
+        <div>
+          <p className="text-sm text-[var(--color-muted-fg)]">{user.email}</p>
+          {joinDate && <p className="text-xs text-[var(--color-muted-fg)] mt-1">Joined {joinDate}</p>}
+          <label className="inline-block mt-2 text-xs font-semibold text-[var(--color-accent)] hover:underline cursor-pointer">
+            {uploading ? 'Uploading…' : 'Upload photo'}
+            <input type="file" accept="image/jpeg,image/png,image/webp" onChange={handlePhotoChange} disabled={uploading} className="hidden" />
+          </label>
+        </div>
+      </div>
+      {photoError && <p className="text-sm text-red-600 mt-2">{photoError}</p>}
 
       <div className="mt-6 bg-[var(--color-card)] border border-[var(--color-border)] rounded-xl p-4">
         <div className="flex items-center justify-between">

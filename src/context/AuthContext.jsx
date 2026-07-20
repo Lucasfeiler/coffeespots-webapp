@@ -47,8 +47,14 @@ export function AuthProvider({ children }) {
     setUser(null);
   };
 
+  const uploadPhoto = async (file) => {
+    const { user } = await api.uploadPhoto(file);
+    setUser(user);
+    return user;
+  };
+
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, logout, updateProfile, deleteAccount }}>
+    <AuthContext.Provider value={{ user, loading, login, register, logout, updateProfile, deleteAccount, uploadPhoto }}>
       {children}
     </AuthContext.Provider>
   );

@@ -11,6 +11,25 @@ function beanGlyph(seed) {
 
 export function ShopThumb({ shop, className = '' }) {
   const hue = beanGlyph(shop.slug);
+
+  if (shop.image) {
+    return (
+      <div className={`relative overflow-hidden ${className}`}>
+        <img
+          src={shop.image}
+          alt={shop.name}
+          loading="lazy"
+          className="w-full h-full object-cover"
+        />
+        {shop.placeholder && (
+          <span className="absolute top-2 left-2 text-[10px] font-semibold uppercase tracking-wide bg-[var(--color-card)]/90 text-[var(--color-fg)] px-2 py-0.5 rounded-full">
+            Needs details
+          </span>
+        )}
+      </div>
+    );
+  }
+
   return (
     <div
       className={`relative overflow-hidden ${className}`}

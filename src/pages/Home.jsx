@@ -53,14 +53,17 @@ export default function Home() {
               key={city}
               to={`/explore?city=${encodeURIComponent(city)}`}
               className="group relative rounded-2xl overflow-hidden h-28 flex items-end p-4 border border-[var(--color-border)] hover:shadow-md transition-shadow"
-              style={{
-                background:
-                  'linear-gradient(160deg, var(--color-card), var(--color-bg))',
-              }}
             >
-              <div className="text-[var(--color-fg)]">
+              <img
+                src={`/images/cities/${city.toLowerCase()}.jpg`}
+                alt={city}
+                loading="lazy"
+                className="absolute inset-0 w-full h-full object-cover transition-transform group-hover:scale-105"
+              />
+              <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(0,0,0,0) 30%, rgba(0,0,0,0.75) 100%)' }} />
+              <div className="relative text-white">
                 <p className="font-display font-semibold">{city}</p>
-                <p className="text-xs opacity-70">{cityCount(city)} spots</p>
+                <p className="text-xs opacity-80">{cityCount(city)} spots</p>
               </div>
             </Link>
           ))}

@@ -144,7 +144,6 @@ authRouter.post('/forgot-password', async (req, res) => {
   if (!email) return res.status(400).json({ error: 'email is required' });
 
   const user = await prisma.user.findUnique({ where: { email } });
-  let debugInfo = { userFound: !!user };
   // Always respond the same way whether or not the account exists, so this
   // endpoint can't be used to check which emails have accounts.
   if (user) {
@@ -154,15 +153,13 @@ authRouter.post('/forgot-password', async (req, res) => {
     });
     const resetUrl = `${process.env.CLIENT_ORIGIN}/reset-password?token=${token}`;
     try {
-      const result = await sendPasswordResetEmail(user.email, resetUrl);
-      debugInfo.sendResult = result;
+      await sendPasswordResetEmail(user.email, resetUrl);
     } catch (e) {
       console.error('Failed to send password reset email', e);
-      debugInfo.sendError = e.message;
     }
   }
 
-  res.json({ ok: true, debugInfo });
+  res.json({ ok: true });
 });
 
 authRouter.post('/reset-password', async (req, res) => {

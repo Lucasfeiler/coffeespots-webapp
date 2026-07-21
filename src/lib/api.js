@@ -34,6 +34,9 @@ export const api = {
   me: () => request('/api/auth/me', { auth: true }),
   updateProfile: (data) => request('/api/auth/me', { method: 'PATCH', auth: true, body: data }),
   deleteAccount: (password) => request('/api/auth/me', { method: 'DELETE', auth: true, body: { password } }),
+  changeEmail: (email, password) => request('/api/auth/me/email', { method: 'PATCH', auth: true, body: { email, password } }),
+  forgotPassword: (email) => request('/api/auth/forgot-password', { method: 'POST', body: { email } }),
+  resetPassword: (token, password) => request('/api/auth/reset-password', { method: 'POST', body: { token, password } }),
   uploadPhoto: async (file) => {
     const formData = new FormData();
     formData.append('photo', file);

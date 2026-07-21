@@ -53,8 +53,15 @@ export function AuthProvider({ children }) {
     return user;
   };
 
+  const changeEmail = async (email, password) => {
+    const { token, user } = await api.changeEmail(email, password);
+    setToken(token);
+    setUser(user);
+    return user;
+  };
+
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, logout, updateProfile, deleteAccount, uploadPhoto }}>
+    <AuthContext.Provider value={{ user, loading, login, register, logout, updateProfile, deleteAccount, uploadPhoto, changeEmail }}>
       {children}
     </AuthContext.Provider>
   );

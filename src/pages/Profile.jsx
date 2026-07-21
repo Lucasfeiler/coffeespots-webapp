@@ -23,7 +23,7 @@ function formatJoinDate(dateString) {
 }
 
 export default function Profile() {
-  const { user, loading, updateProfile, deleteAccount, uploadPhoto } = useAuth();
+  const { user, loading, updateProfile, deleteAccount, uploadPhoto, changeEmail } = useAuth();
   const navigate = useNavigate();
   const [name, setName] = useState('');
   const [location, setLocation] = useState('');
@@ -42,6 +42,17 @@ export default function Profile() {
 
   const [notifStatus, setNotifStatus] = useState('idle'); // idle | enabling | enabled | error | sending | sent
   const [notifError, setNotifError] = useState('');
+
+  const [showEmailForm, setShowEmailForm] = useState(false);
+  const [newEmail, setNewEmail] = useState('');
+  const [emailPassword, setEmailPassword] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [emailSaved, setEmailSaved] = useState(false);
+  const [changingEmail, setChangingEmail] = useState(false);
+
+  const [resetSent, setResetSent] = useState(false);
+  const [resetSending, setResetSending] = useState(false);
+  const [resetError, setResetError] = useState('');
 
   useEffect(() => {
     if (user) {
@@ -131,6 +142,36 @@ export default function Profile() {
     } catch (err) {
       setNotifError(err.message);
       setNotifStatus('error');
+    }
+  };
+
+  const handleChangeEmail = async (e) => {
+    e.preventDefault();
+    setEmailError('');
+    setEmailSaved(false);
+    setChangingEmail(true);
+    try {
+      await changeEmail(newEmail, emailPassword);
+      setEmailSaved(true);
+      setEmailPassword('');
+      setShowEmailForm(false);
+    } catch (err) {
+      setEmailError(err.message);
+    } finally {
+      setChangingEmail(false);
+    }
+  };
+
+  const handleSendPasswordReset = async () => {
+    setResetError('');
+    setResetSending(true);
+    try {
+      await api.forgotPassword(user.email);
+      setResetSent(true);
+    } catch (err) {
+      setResetError(err.message);
+    } finally {
+      setResetSending(false);
     }
   };
 
@@ -236,7 +277,57 @@ export default function Profile() {
         </button>
       </form>
 
-      <div className="mt-12 border border-red-900/40 bg-red-950/20 rounded-xl p-5">
+      <div className="mt-8 bg-[var(--color-card)] border border-[var(--color-border)] rounded-xl p-4">
+        <p className="text-sm font-semibold">Account</p>
+
+        {!showEmailForm ? (
+          <button
+            onClick={() => { setShowEmailForm(true); setNewEmail(user.email); }}
+            className="mt-3 w-full text-left px-4 py-2.5 rounded-xl border border-[var(--color-border)] text-sm hover:bg-[var(--color-bg)] transition-colors"
+          >
+            Change email
+          </button>
+        ) : (
+          <form onSubmit={handleChangeEmail} className="mt-3 flex flex-col gap-3">
+            <label className="flex flex-col gap-1.5">
+              <span className="text-sm font-medium">New email</span>
+              <input required type="email" value={newEmail} onChange={(e) => setNewEmail(e.target.value)} className={inputClass} />
+            </label>
+            <label className="flex flex-col gap-1.5">
+              <span className="text-sm font-medium">Confirm your password</span>
+              <input required type="password" value={emailPassword} onChange={(e) => setEmailPassword(e.target.value)} className={inputClass} />
+            </label>
+            {emailError && <p className="text-sm text-red-500">{emailError}</p>}
+            <div className="flex gap-2">
+              <button
+                disabled={changingEmail}
+                className="px-5 py-2 rounded-xl bg-[var(--color-primary)] text-[var(--color-primary-fg)] font-semibold text-sm disabled:opacity-60"
+              >
+                {changingEmail ? 'Saving…' : 'Save email'}
+              </button>
+              <button
+                type="button"
+                onClick={() => { setShowEmailForm(false); setEmailPassword(''); setEmailError(''); }}
+                className="px-5 py-2 rounded-xl border border-[var(--color-border)] font-semibold text-sm hover:bg-[var(--color-bg)]"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        )}
+        {emailSaved && <p className="text-sm text-[var(--color-accent)] mt-2">Email updated.</p>}
+
+        <button
+          onClick={handleSendPasswordReset}
+          disabled={resetSending || resetSent}
+          className="mt-2 w-full text-left px-4 py-2.5 rounded-xl border border-[var(--color-border)] text-sm hover:bg-[var(--color-bg)] transition-colors disabled:opacity-60"
+        >
+          {resetSending ? 'Sending…' : resetSent ? 'Reset email sent — check your inbox' : 'Send password reset email'}
+        </button>
+        {resetError && <p className="text-sm text-red-500 mt-2">{resetError}</p>}
+      </div>
+
+      <div className="mt-4 border border-red-900/40 bg-red-950/20 rounded-xl p-5">
         <p className="text-sm font-semibold text-red-500">Danger zone</p>
         <p className="text-sm text-[var(--color-muted-fg)] mt-1">
           Deleting your account permanently removes your profile, favorites, and reviews. This cannot be undone.

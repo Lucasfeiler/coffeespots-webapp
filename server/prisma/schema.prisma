@@ -20,6 +20,7 @@ model User {
   reviews      Review[]
   visits       Visit[]
   deviceTokens DeviceToken[]
+  resetTokens  PasswordResetToken[]
 }
 
 model Shop {
@@ -85,6 +86,16 @@ model DeviceToken {
   id        Int      @id @default(autoincrement())
   userId    Int
   token     String   @unique
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model PasswordResetToken {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  token     String   @unique
+  expiresAt DateTime
+  usedAt    DateTime?
   createdAt DateTime @default(now())
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

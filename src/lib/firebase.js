@@ -21,14 +21,18 @@ function getFirebaseApp() {
 let foregroundListenerSet = false;
 
 export async function requestNotificationToken() {
+  console.log('[notif] requestNotificationToken start');
   const supported = await isSupported().catch(() => false);
+  console.log('[notif] isSupported:', supported);
   if (!supported) throw new Error('Push notifications are not supported in this browser');
   if (!VAPID_KEY) throw new Error('VITE_FIREBASE_VAPID_KEY is not set');
 
   const permission = await Notification.requestPermission();
+  console.log('[notif] permission:', permission);
   if (permission !== 'granted') throw new Error('Notification permission was not granted');
 
   const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
+  console.log('[notif] service worker registered:', registration.scope);
   const messaging = getMessaging(getFirebaseApp());
 
   // FCM only delivers to the service worker's onBackgroundMessage when the tab
@@ -36,13 +40,21 @@ export async function requestNotificationToken() {
   // — without this listener they're received by the SDK but never actually shown.
   if (!foregroundListenerSet) {
     foregroundListenerSet = true;
+    console.log('[notif] registering onMessage listener');
     onMessage(messaging, (payload) => {
+      console.log('[notif] onMessage fired:', payload);
       const { title, body } = payload.notification || {};
-      new Notification(title || 'CoffeeSpots', { body: body || '', icon: '/app-icon.svg' });
+      try {
+        new Notification(title || 'CoffeeSpots', { body: body || '', icon: '/app-icon.svg' });
+        console.log('[notif] Notification() constructor succeeded');
+      } catch (e) {
+        console.log('[notif] Notification() constructor threw:', e.message);
+      }
     });
   }
 
   const token = await getToken(messaging, { vapidKey: VAPID_KEY, serviceWorkerRegistration: registration });
+  console.log('[notif] got token:', token ? token.slice(0, 20) + '...' : token);
   if (!token) throw new Error('Could not get a notification token');
   return token;
 }

@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getMessaging, getToken, isSupported } from 'firebase/messaging';
+import { getMessaging, getToken, isSupported, onMessage } from 'firebase/messaging';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyDPbGjux8qSlgyQbZRVFrTxxNRVgLOgDbc',
@@ -18,6 +18,8 @@ function getFirebaseApp() {
   return app;
 }
 
+let foregroundListenerSet = false;
+
 export async function requestNotificationToken() {
   const supported = await isSupported().catch(() => false);
   if (!supported) throw new Error('Push notifications are not supported in this browser');
@@ -28,6 +30,18 @@ export async function requestNotificationToken() {
 
   const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
   const messaging = getMessaging(getFirebaseApp());
+
+  // FCM only delivers to the service worker's onBackgroundMessage when the tab
+  // isn't focused. While the tab is open and active, messages arrive here instead
+  // — without this listener they're received by the SDK but never actually shown.
+  if (!foregroundListenerSet) {
+    foregroundListenerSet = true;
+    onMessage(messaging, (payload) => {
+      const { title, body } = payload.notification || {};
+      new Notification(title || 'CoffeeSpots', { body: body || '', icon: '/app-icon.svg' });
+    });
+  }
+
   const token = await getToken(messaging, { vapidKey: VAPID_KEY, serviceWorkerRegistration: registration });
   if (!token) throw new Error('Could not get a notification token');
   return token;

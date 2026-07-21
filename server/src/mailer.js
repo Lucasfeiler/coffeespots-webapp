@@ -11,7 +11,7 @@ function getResend() {
 }
 
 export async function sendPasswordResetEmail(to, resetUrl) {
-  await getResend().emails.send({
+  const result = await getResend().emails.send({
     from: 'CoffeeSpots <onboarding@resend.dev>',
     to,
     subject: 'Reset your CoffeeSpots password',
@@ -21,4 +21,12 @@ export async function sendPasswordResetEmail(to, resetUrl) {
       <p>If you didn't request this, you can safely ignore this email.</p>
     `,
   });
+
+  // The Resend SDK doesn't throw on API-level failures -- it returns them in
+  // result.error instead, so this has to be checked explicitly.
+  if (result.error) {
+    throw new Error(`Resend API error: ${result.error.message || JSON.stringify(result.error)}`);
+  }
+
+  return result;
 }

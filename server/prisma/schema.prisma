@@ -36,6 +36,7 @@ model Shop {
   website      String?
   instagram    String?
   image        String?
+  images       Json?
   placeholder  Boolean    @default(false)
   rating       Float      @default(0)
   reviewCount  Int        @default(0)

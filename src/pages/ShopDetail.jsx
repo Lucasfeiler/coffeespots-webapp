@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { api } from '../lib/api';
-import { ShopThumb } from '../components/ShopCard';
+import PhotoGallery from '../components/PhotoGallery';
 import { useFavorites } from '../context/FavoritesContext';
 import { useVisits } from '../context/VisitsContext';
 import { useAuth } from '../context/AuthContext';
@@ -89,7 +89,7 @@ export default function ShopDetail() {
         ← Back to explore
       </Link>
 
-      <ShopThumb shop={shop} className="w-full h-56 sm:h-72 rounded-2xl mt-4" />
+      <PhotoGallery shop={shop} className="w-full h-56 sm:h-72 rounded-2xl mt-4" />
 
       <div className="flex items-start justify-between gap-4 mt-6">
         <h1 className="font-display text-3xl sm:text-4xl font-semibold">{shop.name}</h1>

@@ -67,6 +67,9 @@ export const api = {
   addReview: (slug, rating, text) => request(`/api/shops/${slug}/reviews`, { method: 'POST', auth: true, body: { rating, text } }),
 
   submitShop: (payload) => request('/api/submissions', { method: 'POST', body: payload }),
+  listSubmissions: () => request('/api/submissions', { auth: true }),
+  approveSubmission: (id) => request(`/api/submissions/${id}/approve`, { method: 'PATCH', auth: true }),
+  rejectSubmission: (id) => request(`/api/submissions/${id}/reject`, { method: 'PATCH', auth: true }),
 
   nearbyShops: (lat, lon, radius) =>
     request(`/api/nearby?lat=${lat}&lon=${lon}${radius ? `&radius=${radius}` : ''}`),

@@ -22,7 +22,7 @@ export default function Layout({ children }) {
             Coffee<span className="text-[var(--color-accent)]">Spots</span>
           </Link>
           <nav className="hidden sm:flex items-center gap-1 text-sm font-medium">
-            {navLinks.map((l) => (
+            {(user?.isAdmin ? [...navLinks, { to: '/admin', label: 'Admin' }] : navLinks).map((l) => (
               <NavLink
                 key={l.to}
                 to={l.to}
@@ -64,7 +64,7 @@ export default function Layout({ children }) {
           )}
         </div>
         <nav className="sm:hidden flex items-center gap-1 px-5 pb-3 text-sm font-medium overflow-x-auto">
-          {navLinks.map((l) => (
+          {(user?.isAdmin ? [...navLinks, { to: '/admin', label: 'Admin' }] : navLinks).map((l) => (
             <NavLink
               key={l.to}
               to={l.to}

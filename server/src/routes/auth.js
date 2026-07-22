@@ -33,6 +33,7 @@ function publicUser(user, visitCount = 0) {
     location: user.location,
     bio: user.bio,
     avatarUrl: user.avatarUrl,
+    isAdmin: user.isAdmin,
     createdAt: user.createdAt,
     visitCount,
   };
@@ -188,6 +189,16 @@ authRouter.delete('/me', requireAuth, async (req, res) => {
   const user = await prisma.user.findUnique({ where: { id: req.user.sub } });
   if (!user || !(await bcrypt.compare(password, user.passwordHash))) {
     return res.status(401).json({ error: 'Incorrect password' });
+  }
+
+  if (user.avatarUrl) {
+    try {
+      const bucket = getStorageBucket();
+      const filePath = user.avatarUrl.split(`${bucket.name}/`)[1];
+      if (filePath) await bucket.file(filePath).delete({ ignoreNotFound: true });
+    } catch (e) {
+      console.error('Failed to delete avatar during account deletion', e);
+    }
   }
 
   const reviews = await prisma.review.findMany({ where: { userId: req.user.sub }, select: { shopId: true } });

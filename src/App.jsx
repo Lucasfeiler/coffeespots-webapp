@@ -12,6 +12,7 @@ import NearMe from './pages/NearMe';
 import Favorites from './pages/Favorites';
 import Profile from './pages/Profile';
 import AddShop from './pages/AddShop';
+import Admin from './pages/Admin';
 import Auth from './pages/Auth';
 import ResetPassword from './pages/ResetPassword';
 import { Privacy, Terms, Impressum } from './pages/StaticPages';
@@ -33,6 +34,7 @@ export default function App() {
                   <Route path="/favorites" element={<Favorites />} />
                   <Route path="/profile" element={<Profile />} />
                   <Route path="/add-shop" element={<AddShop />} />
+                  <Route path="/admin" element={<Admin />} />
                   <Route path="/auth" element={<Auth />} />
                   <Route path="/reset-password" element={<ResetPassword />} />
                   <Route path="/privacy" element={<Privacy />} />

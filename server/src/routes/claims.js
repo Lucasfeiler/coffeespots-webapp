@@ -66,12 +66,13 @@ claimsRouter.patch('/:id/approve', requireAdmin, async (req, res) => {
   if (!claim) return res.status(404).json({ error: 'Claim not found' });
   if (claim.status !== 'pending') return res.status(400).json({ error: `Claim is already ${claim.status}` });
 
+  const now = new Date();
   await prisma.$transaction([
     prisma.shop.update({ where: { id: claim.shopId }, data: { ownerId: claim.userId } }),
-    prisma.shopClaim.update({ where: { id }, data: { status: 'approved' } }),
+    prisma.shopClaim.update({ where: { id }, data: { status: 'approved', reviewedAt: now } }),
     prisma.shopClaim.updateMany({
       where: { shopId: claim.shopId, id: { not: id }, status: 'pending' },
-      data: { status: 'rejected' },
+      data: { status: 'rejected', reviewedAt: now },
     }),
   ]);
 
@@ -84,6 +85,6 @@ claimsRouter.patch('/:id/reject', requireAdmin, async (req, res) => {
   if (!claim) return res.status(404).json({ error: 'Claim not found' });
   if (claim.status !== 'pending') return res.status(400).json({ error: `Claim is already ${claim.status}` });
 
-  await prisma.shopClaim.update({ where: { id }, data: { status: 'rejected' } });
+  await prisma.shopClaim.update({ where: { id }, data: { status: 'rejected', reviewedAt: new Date() } });
   res.json({ ok: true });
 });

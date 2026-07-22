@@ -67,7 +67,7 @@ submissionsRouter.patch('/:id/approve', requireAuth, requireAdmin, async (req, r
         placeholder: true,
       },
     }),
-    prisma.submission.update({ where: { id }, data: { status: 'approved' } }),
+    prisma.submission.update({ where: { id }, data: { status: 'approved', reviewedAt: new Date() } }),
   ]);
 
   res.json({ shop });
@@ -81,6 +81,6 @@ submissionsRouter.patch('/:id/reject', requireAuth, requireAdmin, async (req, re
     return res.status(400).json({ error: `Submission is already ${submission.status}` });
   }
 
-  await prisma.submission.update({ where: { id }, data: { status: 'rejected' } });
+  await prisma.submission.update({ where: { id }, data: { status: 'rejected', reviewedAt: new Date() } });
   res.json({ ok: true });
 });

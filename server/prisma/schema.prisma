@@ -56,14 +56,15 @@ model Shop {
 }
 
 model ShopClaim {
-  id        Int      @id @default(autoincrement())
-  userId    Int
-  shopId    Int
-  message   String?
-  status    String   @default("pending")
-  createdAt DateTime @default(now())
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  shop      Shop     @relation(fields: [shopId], references: [id], onDelete: Cascade)
+  id         Int       @id @default(autoincrement())
+  userId     Int
+  shopId     Int
+  message    String?
+  status     String    @default("pending")
+  createdAt  DateTime  @default(now())
+  reviewedAt DateTime?
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  shop       Shop      @relation(fields: [shopId], references: [id], onDelete: Cascade)
 
   @@unique([userId, shopId])
 }
@@ -122,12 +123,13 @@ model PasswordResetToken {
 }
 
 model Submission {
-  id           Int      @id @default(autoincrement())
+  id           Int       @id @default(autoincrement())
   name         String
   city         String
   neighborhood String?
   address      String
   description  String?
-  status       String   @default("pending")
-  createdAt    DateTime @default(now())
+  status       String    @default("pending")
+  createdAt    DateTime  @default(now())
+  reviewedAt   DateTime?
 }

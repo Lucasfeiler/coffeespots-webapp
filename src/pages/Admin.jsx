@@ -3,6 +3,13 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { api } from '../lib/api';
 
+function formatReviewedAt(dateString) {
+  if (!dateString) return null;
+  return new Date(dateString).toLocaleString(undefined, {
+    day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit',
+  });
+}
+
 export default function Admin() {
   const { user, loading } = useAuth();
   const [submissions, setSubmissions] = useState(null);
@@ -41,7 +48,8 @@ export default function Admin() {
     try {
       if (action === 'approve') await api.approveSubmission(id);
       else await api.rejectSubmission(id);
-      setSubmissions((subs) => subs.map((s) => (s.id === id ? { ...s, status: action === 'approve' ? 'approved' : 'rejected' } : s)));
+      const reviewedAt = new Date().toISOString();
+      setSubmissions((subs) => subs.map((s) => (s.id === id ? { ...s, status: action === 'approve' ? 'approved' : 'rejected', reviewedAt } : s)));
     } catch (err) {
       setError(err.message);
     } finally {
@@ -55,7 +63,8 @@ export default function Admin() {
     try {
       if (action === 'approve') await api.approveClaim(id);
       else await api.rejectClaim(id);
-      setClaims((cs) => cs.map((c) => (c.id === id ? { ...c, status: action === 'approve' ? 'approved' : 'rejected' } : c)));
+      const reviewedAt = new Date().toISOString();
+      setClaims((cs) => cs.map((c) => (c.id === id ? { ...c, status: action === 'approve' ? 'approved' : 'rejected', reviewedAt } : c)));
     } catch (err) {
       setError(err.message);
     } finally {
@@ -121,8 +130,11 @@ export default function Admin() {
                 {decided.map((s) => (
                   <li key={s.id} className="flex items-center justify-between text-sm py-2 border-b border-[var(--color-border)]">
                     <span>{s.name} <span className="text-[var(--color-muted-fg)]">· {s.city}</span></span>
-                    <span className={s.status === 'approved' ? 'text-[var(--color-accent)] font-semibold' : 'text-[var(--color-muted-fg)]'}>
-                      {s.status}
+                    <span className="text-right">
+                      <span className={s.status === 'approved' ? 'text-[var(--color-accent)] font-semibold' : 'text-[var(--color-muted-fg)]'}>
+                        {s.status}
+                      </span>
+                      {s.reviewedAt && <span className="block text-xs text-[var(--color-muted-fg)]">{formatReviewedAt(s.reviewedAt)}</span>}
                     </span>
                   </li>
                 ))}
@@ -181,8 +193,11 @@ export default function Admin() {
                 {decidedClaims.map((c) => (
                   <li key={c.id} className="flex items-center justify-between text-sm py-2 border-b border-[var(--color-border)]">
                     <span>{c.shop.name} <span className="text-[var(--color-muted-fg)]">· {c.user.name}</span></span>
-                    <span className={c.status === 'approved' ? 'text-[var(--color-accent)] font-semibold' : 'text-[var(--color-muted-fg)]'}>
-                      {c.status}
+                    <span className="text-right">
+                      <span className={c.status === 'approved' ? 'text-[var(--color-accent)] font-semibold' : 'text-[var(--color-muted-fg)]'}>
+                        {c.status}
+                      </span>
+                      {c.reviewedAt && <span className="block text-xs text-[var(--color-muted-fg)]">{formatReviewedAt(c.reviewedAt)}</span>}
                     </span>
                   </li>
                 ))}

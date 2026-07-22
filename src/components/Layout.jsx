@@ -10,9 +10,17 @@ const navLinks = [
   { to: '/add-shop', label: 'Add' },
 ];
 
+function getNavLinks(user) {
+  const links = [...navLinks];
+  if (user?.accountType === 'business') links.push({ to: '/my-shop', label: 'My Shop' });
+  if (user?.isAdmin) links.push({ to: '/admin', label: 'Admin' });
+  return links;
+}
+
 export default function Layout({ children }) {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const links = getNavLinks(user);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -22,7 +30,7 @@ export default function Layout({ children }) {
             Coffee<span className="text-[var(--color-accent)]">Spots</span>
           </Link>
           <nav className="hidden sm:flex items-center gap-1 text-sm font-medium">
-            {(user?.isAdmin ? [...navLinks, { to: '/admin', label: 'Admin' }] : navLinks).map((l) => (
+            {links.map((l) => (
               <NavLink
                 key={l.to}
                 to={l.to}
@@ -64,7 +72,7 @@ export default function Layout({ children }) {
           )}
         </div>
         <nav className="sm:hidden flex items-center gap-1 px-5 pb-3 text-sm font-medium overflow-x-auto">
-          {(user?.isAdmin ? [...navLinks, { to: '/admin', label: 'Admin' }] : navLinks).map((l) => (
+          {links.map((l) => (
             <NavLink
               key={l.to}
               to={l.to}

@@ -46,13 +46,14 @@ function publicUser(user, visitCount = 0) {
     bio: user.bio,
     avatarUrl: user.avatarUrl,
     isAdmin: user.isAdmin,
+    accountType: user.accountType,
     createdAt: user.createdAt,
     visitCount,
   };
 }
 
 authRouter.post('/register', authLimiter, async (req, res) => {
-  const { email, password, name } = req.body;
+  const { email, password, name, accountType } = req.body;
   if (!email || !password || !name) {
     return res.status(400).json({ error: 'email, password, and name are required' });
   }
@@ -64,7 +65,9 @@ authRouter.post('/register', authLimiter, async (req, res) => {
   if (existing) return res.status(409).json({ error: 'An account with that email already exists' });
 
   const passwordHash = await bcrypt.hash(password, 10);
-  const user = await prisma.user.create({ data: { email, passwordHash, name } });
+  const user = await prisma.user.create({
+    data: { email, passwordHash, name, accountType: accountType === 'business' ? 'business' : 'customer' },
+  });
 
   res.status(201).json({ token: issueToken(user), user: publicUser(user) });
 });

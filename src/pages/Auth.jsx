@@ -9,7 +9,7 @@ export default function Auth() {
   const { login, register } = useAuth();
   const navigate = useNavigate();
   const [mode, setMode] = useState('login'); // login | register | forgot
-  const [form, setForm] = useState({ name: '', email: '', password: '' });
+  const [form, setForm] = useState({ name: '', email: '', password: '', accountType: 'customer' });
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [resetSent, setResetSent] = useState(false);
@@ -22,7 +22,7 @@ export default function Auth() {
     setSubmitting(true);
     try {
       if (mode === 'login') await login(form.email, form.password);
-      else await register(form.email, form.password, form.name);
+      else await register(form.email, form.password, form.name, form.accountType);
       navigate('/favorites');
     } catch (err) {
       setError(err.message);
@@ -90,7 +90,38 @@ export default function Auth() {
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         {mode === 'register' && (
-          <input required placeholder="Name" value={form.name} onChange={update('name')} className={inputClass} />
+          <>
+            <div className="grid grid-cols-2 gap-2">
+              <button
+                type="button"
+                onClick={() => setForm((f) => ({ ...f, accountType: 'customer' }))}
+                className={`px-4 py-2.5 rounded-xl text-sm font-semibold border transition-colors ${
+                  form.accountType === 'customer'
+                    ? 'bg-[var(--color-primary)] text-[var(--color-primary-fg)] border-[var(--color-primary)]'
+                    : 'border-[var(--color-border)] hover:bg-[var(--color-card)]'
+                }`}
+              >
+                Customer
+              </button>
+              <button
+                type="button"
+                onClick={() => setForm((f) => ({ ...f, accountType: 'business' }))}
+                className={`px-4 py-2.5 rounded-xl text-sm font-semibold border transition-colors ${
+                  form.accountType === 'business'
+                    ? 'bg-[var(--color-primary)] text-[var(--color-primary-fg)] border-[var(--color-primary)]'
+                    : 'border-[var(--color-border)] hover:bg-[var(--color-card)]'
+                }`}
+              >
+                Cafe owner
+              </button>
+            </div>
+            {form.accountType === 'business' && (
+              <p className="text-xs text-[var(--color-muted-fg)] -mt-2">
+                You'll be able to claim your cafe's listing and edit its details after signing up.
+              </p>
+            )}
+            <input required placeholder="Name" value={form.name} onChange={update('name')} className={inputClass} />
+          </>
         )}
         <input required type="email" placeholder="Email" value={form.email} onChange={update('email')} className={inputClass} />
         <input required type="password" placeholder="Password" value={form.password} onChange={update('password')} className={inputClass} />

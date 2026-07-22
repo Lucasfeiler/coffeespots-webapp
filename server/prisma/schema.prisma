@@ -16,12 +16,15 @@ model User {
   bio          String?
   avatarUrl    String?
   isAdmin      Boolean    @default(false)
+  accountType  String     @default("customer")
   createdAt    DateTime   @default(now())
   favorites    Favorite[]
   reviews      Review[]
   visits       Visit[]
   deviceTokens DeviceToken[]
   resetTokens  PasswordResetToken[]
+  ownedShops   Shop[]
+  claims       ShopClaim[]
 }
 
 model Shop {
@@ -43,10 +46,26 @@ model Shop {
   reviewCount  Int        @default(0)
   lat          Float?
   lng          Float?
+  ownerId      Int?
   createdAt    DateTime   @default(now())
   favorites    Favorite[]
   reviews      Review[]
   visits       Visit[]
+  claims       ShopClaim[]
+  owner        User?      @relation(fields: [ownerId], references: [id], onDelete: SetNull)
+}
+
+model ShopClaim {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  shopId    Int
+  message   String?
+  status    String   @default("pending")
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  shop      Shop     @relation(fields: [shopId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, shopId])
 }
 
 model Favorite {

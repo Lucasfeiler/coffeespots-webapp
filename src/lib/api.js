@@ -28,8 +28,22 @@ async function request(path, { method = 'GET', body, auth = false } = {}) {
   return data;
 }
 
+async function uploadFile(path, file) {
+  const formData = new FormData();
+  formData.append('photo', file);
+  const res = await fetch(`${BASE_URL}${path}`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${getToken()}` },
+    body: formData,
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.error || `Request failed (${res.status})`);
+  return data;
+}
+
 export const api = {
-  register: (email, password, name) => request('/api/auth/register', { method: 'POST', body: { email, password, name } }),
+  register: (email, password, name, accountType) =>
+    request('/api/auth/register', { method: 'POST', body: { email, password, name, accountType } }),
   login: (email, password) => request('/api/auth/login', { method: 'POST', body: { email, password } }),
   me: () => request('/api/auth/me', { auth: true }),
   updateProfile: (data) => request('/api/auth/me', { method: 'PATCH', auth: true, body: data }),
@@ -37,18 +51,7 @@ export const api = {
   changeEmail: (email, password) => request('/api/auth/me/email', { method: 'PATCH', auth: true, body: { email, password } }),
   forgotPassword: (email) => request('/api/auth/forgot-password', { method: 'POST', body: { email } }),
   resetPassword: (token, password) => request('/api/auth/reset-password', { method: 'POST', body: { token, password } }),
-  uploadPhoto: async (file) => {
-    const formData = new FormData();
-    formData.append('photo', file);
-    const res = await fetch(`${BASE_URL}/api/auth/me/photo`, {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${getToken()}` },
-      body: formData,
-    });
-    const data = await res.json().catch(() => ({}));
-    if (!res.ok) throw new Error(data.error || `Request failed (${res.status})`);
-    return data;
-  },
+  uploadPhoto: (file) => uploadFile('/api/auth/me/photo', file),
   removePhoto: () => request('/api/auth/me/photo', { method: 'DELETE', auth: true }),
 
   listShops: (params = {}) => {
@@ -57,6 +60,15 @@ export const api = {
   },
   shopsMeta: () => request('/api/shops/meta'),
   getShop: (slug) => request(`/api/shops/${slug}`),
+  myShops: () => request('/api/shops/mine', { auth: true }),
+  updateShop: (slug, data) => request(`/api/shops/${slug}`, { method: 'PATCH', auth: true, body: data }),
+  uploadShopPhoto: (slug, file) => uploadFile(`/api/shops/${slug}/photo`, file),
+
+  claimShop: (shopId, message) => request('/api/claims', { method: 'POST', auth: true, body: { shopId, message } }),
+  myClaims: () => request('/api/claims/mine', { auth: true }),
+  listClaims: () => request('/api/claims', { auth: true }),
+  approveClaim: (id) => request(`/api/claims/${id}/approve`, { method: 'PATCH', auth: true }),
+  rejectClaim: (id) => request(`/api/claims/${id}/reject`, { method: 'PATCH', auth: true }),
 
   listFavorites: () => request('/api/favorites', { auth: true }),
   toggleFavorite: (shopId) => request(`/api/favorites/${shopId}`, { method: 'POST', auth: true }),

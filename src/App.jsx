@@ -13,6 +13,7 @@ import Favorites from './pages/Favorites';
 import Profile from './pages/Profile';
 import AddShop from './pages/AddShop';
 import Admin from './pages/Admin';
+import MyShop from './pages/MyShop';
 import Auth from './pages/Auth';
 import ResetPassword from './pages/ResetPassword';
 import { Privacy, Terms, Impressum } from './pages/StaticPages';
@@ -35,6 +36,7 @@ export default function App() {
                   <Route path="/profile" element={<Profile />} />
                   <Route path="/add-shop" element={<AddShop />} />
                   <Route path="/admin" element={<Admin />} />
+                  <Route path="/my-shop" element={<MyShop />} />
                   <Route path="/auth" element={<Auth />} />
                   <Route path="/reset-password" element={<ResetPassword />} />
                   <Route path="/privacy" element={<Privacy />} />

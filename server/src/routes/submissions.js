@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { prisma } from '../db.js';
 import { requireAuth, requireAdmin } from '../middleware/auth.js';
+import { writeLimiter } from '../middleware/rateLimit.js';
 
 export const submissionsRouter = Router();
 
@@ -15,7 +16,7 @@ function slugify(name) {
     .replace(/^-+|-+$/g, '');
 }
 
-submissionsRouter.post('/', async (req, res) => {
+submissionsRouter.post('/', writeLimiter, async (req, res) => {
   const { name, city, neighborhood, address, description } = req.body;
   if (!name || !city || !address) {
     return res.status(400).json({ error: 'name, city, and address are required' });

@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { prisma } from '../db.js';
 import { requireAuth } from '../middleware/auth.js';
+import { writeLimiter } from '../middleware/rateLimit.js';
 
 export const reviewsRouter = Router({ mergeParams: true });
 
@@ -40,7 +41,7 @@ reviewsRouter.get('/', async (req, res) => {
   });
 });
 
-reviewsRouter.post('/', requireAuth, async (req, res) => {
+reviewsRouter.post('/', requireAuth, writeLimiter, async (req, res) => {
   const shop = await prisma.shop.findUnique({ where: { slug: req.params.slug } });
   if (!shop) return res.status(404).json({ error: 'Shop not found' });
 

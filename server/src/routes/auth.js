@@ -5,6 +5,7 @@ import multer from 'multer';
 import { randomUUID, randomBytes } from 'node:crypto';
 import { prisma } from '../db.js';
 import { requireAuth } from '../middleware/auth.js';
+import { authLimiter, forgotPasswordLimiter, writeLimiter } from '../middleware/rateLimit.js';
 import { getStorageBucket } from '../firebase.js';
 import { sendPasswordResetEmail } from '../mailer.js';
 
@@ -39,7 +40,7 @@ function publicUser(user, visitCount = 0) {
   };
 }
 
-authRouter.post('/register', async (req, res) => {
+authRouter.post('/register', authLimiter, async (req, res) => {
   const { email, password, name } = req.body;
   if (!email || !password || !name) {
     return res.status(400).json({ error: 'email, password, and name are required' });
@@ -57,7 +58,7 @@ authRouter.post('/register', async (req, res) => {
   res.status(201).json({ token: issueToken(user), user: publicUser(user) });
 });
 
-authRouter.post('/login', async (req, res) => {
+authRouter.post('/login', authLimiter, async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) return res.status(400).json({ error: 'email and password are required' });
 
@@ -96,7 +97,7 @@ authRouter.patch('/me', requireAuth, async (req, res) => {
   res.json({ user: publicUser(user, visitCount) });
 });
 
-authRouter.post('/me/photo', requireAuth, (req, res) => {
+authRouter.post('/me/photo', requireAuth, writeLimiter, (req, res) => {
   upload.single('photo')(req, res, async (err) => {
     if (err) return res.status(400).json({ error: err.message });
     if (!req.file) return res.status(400).json({ error: 'No photo uploaded' });
@@ -121,7 +122,7 @@ authRouter.post('/me/photo', requireAuth, (req, res) => {
   });
 });
 
-authRouter.patch('/me/email', requireAuth, async (req, res) => {
+authRouter.patch('/me/email', requireAuth, authLimiter, async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) return res.status(400).json({ error: 'email and password are required' });
 
@@ -140,7 +141,7 @@ authRouter.patch('/me/email', requireAuth, async (req, res) => {
   res.json({ token: issueToken(updated), user: publicUser(updated, visitCount) });
 });
 
-authRouter.post('/forgot-password', async (req, res) => {
+authRouter.post('/forgot-password', forgotPasswordLimiter, async (req, res) => {
   const { email } = req.body;
   if (!email) return res.status(400).json({ error: 'email is required' });
 
@@ -163,7 +164,7 @@ authRouter.post('/forgot-password', async (req, res) => {
   res.json({ ok: true });
 });
 
-authRouter.post('/reset-password', async (req, res) => {
+authRouter.post('/reset-password', authLimiter, async (req, res) => {
   const { token, password } = req.body;
   if (!token || !password) return res.status(400).json({ error: 'token and password are required' });
   if (password.length < 8) return res.status(400).json({ error: 'Password must be at least 8 characters' });
@@ -182,7 +183,7 @@ authRouter.post('/reset-password', async (req, res) => {
   res.json({ ok: true });
 });
 
-authRouter.delete('/me', requireAuth, async (req, res) => {
+authRouter.delete('/me', requireAuth, authLimiter, async (req, res) => {
   const { password } = req.body;
   if (!password) return res.status(400).json({ error: 'Password is required to delete your account' });
 

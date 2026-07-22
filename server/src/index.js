@@ -11,6 +11,7 @@ import { visitsRouter } from './routes/visits.js';
 import { notificationsRouter } from './routes/notifications.js';
 
 const app = express();
+app.set('trust proxy', 1);
 
 app.use(cors({ origin: process.env.CLIENT_ORIGIN }));
 app.use(express.json());

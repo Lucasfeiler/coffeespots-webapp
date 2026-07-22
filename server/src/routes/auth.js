@@ -22,6 +22,17 @@ const upload = multer({
   },
 });
 
+async function deleteAvatarBlob(avatarUrl) {
+  if (!avatarUrl) return;
+  try {
+    const bucket = getStorageBucket();
+    const filePath = avatarUrl.split(`${bucket.name}/`)[1];
+    if (filePath) await bucket.file(filePath).delete({ ignoreNotFound: true });
+  } catch (e) {
+    console.error('Failed to delete avatar from storage', e);
+  }
+}
+
 function issueToken(user) {
   return jwt.sign({ sub: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '30d' });
 }
@@ -122,6 +133,16 @@ authRouter.post('/me/photo', requireAuth, writeLimiter, (req, res) => {
   });
 });
 
+authRouter.delete('/me/photo', requireAuth, async (req, res) => {
+  const user = await prisma.user.findUnique({ where: { id: req.user.sub } });
+  if (!user) return res.status(404).json({ error: 'User not found' });
+
+  await deleteAvatarBlob(user.avatarUrl);
+  const updated = await prisma.user.update({ where: { id: user.id }, data: { avatarUrl: null } });
+  const visitCount = await prisma.visit.count({ where: { userId: user.id } });
+  res.json({ user: publicUser(updated, visitCount) });
+});
+
 authRouter.patch('/me/email', requireAuth, authLimiter, async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) return res.status(400).json({ error: 'email and password are required' });
@@ -192,15 +213,7 @@ authRouter.delete('/me', requireAuth, authLimiter, async (req, res) => {
     return res.status(401).json({ error: 'Incorrect password' });
   }
 
-  if (user.avatarUrl) {
-    try {
-      const bucket = getStorageBucket();
-      const filePath = user.avatarUrl.split(`${bucket.name}/`)[1];
-      if (filePath) await bucket.file(filePath).delete({ ignoreNotFound: true });
-    } catch (e) {
-      console.error('Failed to delete avatar during account deletion', e);
-    }
-  }
+  await deleteAvatarBlob(user.avatarUrl);
 
   const reviews = await prisma.review.findMany({ where: { userId: req.user.sub }, select: { shopId: true } });
   await prisma.user.delete({ where: { id: req.user.sub } });

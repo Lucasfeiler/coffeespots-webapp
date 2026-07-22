@@ -53,6 +53,12 @@ export function AuthProvider({ children }) {
     return user;
   };
 
+  const removePhoto = async () => {
+    const { user } = await api.removePhoto();
+    setUser(user);
+    return user;
+  };
+
   const changeEmail = async (email, password) => {
     const { token, user } = await api.changeEmail(email, password);
     setToken(token);
@@ -61,7 +67,7 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, logout, updateProfile, deleteAccount, uploadPhoto, changeEmail }}>
+    <AuthContext.Provider value={{ user, loading, login, register, logout, updateProfile, deleteAccount, uploadPhoto, removePhoto, changeEmail }}>
       {children}
     </AuthContext.Provider>
   );

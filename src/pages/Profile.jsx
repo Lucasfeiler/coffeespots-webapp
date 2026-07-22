@@ -23,7 +23,7 @@ function formatJoinDate(dateString) {
 }
 
 export default function Profile() {
-  const { user, loading, updateProfile, deleteAccount, uploadPhoto, changeEmail } = useAuth();
+  const { user, loading, updateProfile, deleteAccount, uploadPhoto, removePhoto, changeEmail } = useAuth();
   const navigate = useNavigate();
   const [name, setName] = useState('');
   const [location, setLocation] = useState('');
@@ -39,6 +39,7 @@ export default function Profile() {
 
   const [uploading, setUploading] = useState(false);
   const [photoError, setPhotoError] = useState('');
+  const [removingPhoto, setRemovingPhoto] = useState(false);
 
   const [notifStatus, setNotifStatus] = useState('idle'); // idle | enabling | enabled | error | sending | sent
   const [notifError, setNotifError] = useState('');
@@ -119,6 +120,18 @@ export default function Profile() {
     }
   };
 
+  const handleRemovePhoto = async () => {
+    setPhotoError('');
+    setRemovingPhoto(true);
+    try {
+      await removePhoto();
+    } catch (err) {
+      setPhotoError(err.message);
+    } finally {
+      setRemovingPhoto(false);
+    }
+  };
+
   const handleEnableNotifications = async () => {
     setNotifError('');
     setNotifStatus('enabling');
@@ -190,10 +203,22 @@ export default function Profile() {
         <div>
           <p className="text-sm text-[var(--color-muted-fg)]">{user.email}</p>
           {joinDate && <p className="text-xs text-[var(--color-muted-fg)] mt-1">Joined {joinDate}</p>}
-          <label className="inline-block mt-2 text-xs font-semibold text-[var(--color-accent)] hover:underline cursor-pointer">
-            {uploading ? 'Uploading…' : 'Upload photo'}
-            <input type="file" accept="image/jpeg,image/png,image/webp" onChange={handlePhotoChange} disabled={uploading} className="hidden" />
-          </label>
+          <div className="flex items-center gap-3 mt-2">
+            <label className="text-xs font-semibold text-[var(--color-accent)] hover:underline cursor-pointer">
+              {uploading ? 'Uploading…' : 'Upload photo'}
+              <input type="file" accept="image/jpeg,image/png,image/webp" onChange={handlePhotoChange} disabled={uploading} className="hidden" />
+            </label>
+            {user.avatarUrl && (
+              <button
+                onClick={handleRemovePhoto}
+                disabled={removingPhoto}
+                className="text-xs font-semibold text-red-600 hover:underline disabled:opacity-60"
+              >
+                {removingPhoto ? 'Removing…' : 'Remove photo'}
+              </button>
+            )}
+          </div>
+          <p className="text-xs text-[var(--color-muted-fg)] mt-1">JPEG, PNG, or WebP — up to 5MB</p>
         </div>
       </div>
       {photoError && <p className="text-sm text-red-600 mt-2">{photoError}</p>}

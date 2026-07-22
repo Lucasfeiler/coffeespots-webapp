@@ -49,6 +49,7 @@ export const api = {
     if (!res.ok) throw new Error(data.error || `Request failed (${res.status})`);
     return data;
   },
+  removePhoto: () => request('/api/auth/me/photo', { method: 'DELETE', auth: true }),
 
   listShops: (params = {}) => {
     const qs = new URLSearchParams(Object.entries(params).filter(([, v]) => v)).toString();
